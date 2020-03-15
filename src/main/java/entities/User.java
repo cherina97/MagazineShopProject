@@ -35,6 +35,7 @@ public class User {
 
     public static User of(ResultSet resultSet) {
         try {
+
             int id = resultSet.getInt("id");
             String firstName = resultSet.getString("first_name");
             String lastName = resultSet.getString("last_name");

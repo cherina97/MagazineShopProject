@@ -1,6 +1,7 @@
 package servlets;
 
 import entities.User;
+import org.apache.commons.lang3.ObjectUtils;
 import services.UserService;
 
 import javax.servlet.ServletException;
@@ -9,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Optional;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
@@ -29,16 +31,19 @@ public class LoginServlet extends HttpServlet {
 //            return;
 //        }
 
-        User user = userService.readByEmail(email);
-        if (user == null || email.isEmpty() && password.isEmpty()){
+        if (!ObjectUtils.allNotNull(email, password)) {
             req.getRequestDispatcher("login.jsp").forward(req, resp);
             return;
         }
-        if(user.getPassword().equals(password)){
+
+        Optional<User> user = userService.readByEmail(email);
+
+        if (user.isPresent() && user.get().getPassword().equals(password)) {
             req.setAttribute("userEmail", email);
             req.getRequestDispatcher("cabinet.jsp").forward(req, resp);
             return;
         }
+
         req.getRequestDispatcher("login.jsp").forward(req, resp);
     }
 }

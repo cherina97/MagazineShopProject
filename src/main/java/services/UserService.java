@@ -4,6 +4,7 @@ import daos.UserDao;
 import entities.User;
 
 import java.util.List;
+import java.util.Optional;
 
 public class UserService {
     private static UserService userService;
@@ -28,7 +29,7 @@ public class UserService {
         return userDao.read(id);
     }
 
-    public User readByEmail(String email) {
+    public Optional<User> readByEmail(String email) {
         return userDao.readByEmail(email);
     }
 

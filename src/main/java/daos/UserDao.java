@@ -7,6 +7,7 @@ import recources.ConnectionUtil;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class UserDao implements CRUD<User> {
     private Connection connection;
@@ -20,7 +21,7 @@ public class UserDao implements CRUD<User> {
     public static final String UPDATE = "UPDATE users SET first_name = ?, last_name = ?, email = ?, role = ?, password = ? where id = ?";
     public static final String SELECT_BY_ID = "SELECT * FROM users where id = ?";
     public static final String INSERT_INTO =
-            "INSERT INTO users(email, first_name, last_name, role, password) values(?, ?, ?, ?, ?)";
+            "INSERT INTO users(first_name, last_name, email, role, password) values(?, ?, ?, ?, ?)";
     public static final String SELECT_BY_EMAIL = "SELECT * FROM users where email = ?";
 
     @Override
@@ -57,14 +58,16 @@ public class UserDao implements CRUD<User> {
             throw new RuntimeException("Can`t read a user by id");
         }
     }
-    public User readByEmail(String email) {
+    public Optional<User> readByEmail(String email) {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_EMAIL);
             preparedStatement.setString(1, email);
             ResultSet resultSet = preparedStatement.executeQuery();
-            resultSet.next();
 
-            return User.of(resultSet);
+            if (resultSet.next()){
+                return Optional.of(User.of(resultSet));
+            }
+            return Optional.empty();
         } catch (SQLException e) {
             throw new RuntimeException("Can`t read a user by email");
         }
