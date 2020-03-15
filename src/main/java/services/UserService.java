@@ -13,31 +13,34 @@ public class UserService {
         this.userDao = new UserDao();
     }
 
-    public static UserService getInstance(){
-        if (userService == null){
+    public static UserService getInstance() {
+        if (userService == null) {
             userService = new UserService();
         }
         return userService;
     }
 
-    public User create (User t){
+    public User create(User t) {
         return userDao.create(t);
     }
 
-    public User read (int id){
+    public User readById(int id) {
         return userDao.read(id);
     }
 
-    public void update (User t){
+    public User readByEmail(String email) {
+        return userDao.readByEmail(email);
+    }
+
+    public void update(User t) {
         userDao.update(t);
     }
 
-    public void delete (int id){
-
+    public void delete(int id) {
         userDao.delete(id);
     }
 
-    public List<User> readAll (){
+    public List<User> readAll() {
         return userDao.readAll();
     }
 }

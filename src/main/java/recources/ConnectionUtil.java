@@ -9,12 +9,13 @@ public class ConnectionUtil {
     private static final String USERNAME = "root";
     private static final String PASSWORD = "Chervinskaya1997";
 
-    public static Connection getConnection(){
+    public static Connection getConnection() {
         try {
+            Class.forName("com.mysql.jdbc.Driver");
             return DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
-            throw new RuntimeException("Can't connect to DB");
+            throw new RuntimeException("Can`t connect to DB");
         }
     }
 }

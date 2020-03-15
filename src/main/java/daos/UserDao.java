@@ -17,10 +17,11 @@ public class UserDao implements CRUD<User> {
 
     public static final String SELECT_ALL = "SELECT * FROM users";
     public static final String DELETE = "DELETE FROM users where id = ?";
-    public static final String UPDATE = "UPDATE users SET first_name = ?, last_name = ?, email = ?, role = ? where id = ?";
+    public static final String UPDATE = "UPDATE users SET first_name = ?, last_name = ?, email = ?, role = ?, password = ? where id = ?";
     public static final String SELECT_BY_ID = "SELECT * FROM users where id = ?";
     public static final String INSERT_INTO =
-            "INSERT INTO users(email, first_name, last_name, role) values(?, ?, ?, ?)";
+            "INSERT INTO users(email, first_name, last_name, role, password) values(?, ?, ?, ?, ?)";
+    public static final String SELECT_BY_EMAIL = "SELECT * FROM users where email = ?";
 
     @Override
     public User create(User user) {
@@ -30,6 +31,7 @@ public class UserDao implements CRUD<User> {
             preparedStatement.setString(2, user.getLastName());
             preparedStatement.setString(3, user.getEmail());
             preparedStatement.setString(4, user.getRole());
+            preparedStatement.setString(5, user.getPassword());
             preparedStatement.executeUpdate();
 
             ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
@@ -55,6 +57,18 @@ public class UserDao implements CRUD<User> {
             throw new RuntimeException("Can`t read a user by id");
         }
     }
+    public User readByEmail(String email) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_EMAIL);
+            preparedStatement.setString(1, email);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+
+            return User.of(resultSet);
+        } catch (SQLException e) {
+            throw new RuntimeException("Can`t read a user by email");
+        }
+    }
 
     @Override
     public void update(User user) {
@@ -64,7 +78,8 @@ public class UserDao implements CRUD<User> {
             preparedStatement.setString(2, user.getLastName());
             preparedStatement.setString(3, user.getEmail());
             preparedStatement.setString(4, user.getRole());
-            preparedStatement.setInt(5, user.getId());
+            preparedStatement.setString(5, user.getPassword());
+            preparedStatement.setInt(6, user.getId());
 
             preparedStatement.executeUpdate();
 
