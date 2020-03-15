@@ -2,6 +2,7 @@ package servlets;
 
 import daos.UserDao;
 import entities.User;
+import org.apache.commons.lang3.ObjectUtils;
 import services.UserService;
 
 import javax.servlet.ServletException;
@@ -28,15 +29,13 @@ public class RegisterServlet extends HttpServlet {
         String role = req.getParameter("role");
         String password = req.getParameter("password");
 
-        //ToDo ObjectUtils
-        if (firstName.isEmpty() && lastName.isEmpty() && email.isEmpty() && password.isEmpty() && role.isEmpty()){
-            req.getRequestDispatcher("register.jsp").forward(req, resp);
-        } else {
+        if(ObjectUtils.allNotNull(firstName, lastName, email, role, password)){
             userService.create(new User(firstName, lastName, email, role, password));
             req.setAttribute("userEmail", email);
             req.getRequestDispatcher("cabinet.jsp").forward(req, resp);
             return;
         }
+
         req.getRequestDispatcher("register.jsp").forward(req, resp);
     }
 }
