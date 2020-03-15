@@ -10,6 +10,7 @@ public class ConnectionUtil {
     private static final String PASSWORD = "Chervinskaya1997";
 
     public static Connection getConnection() {
+        //todo add log
         try {
             Class.forName("com.mysql.jdbc.Driver");
             return DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);

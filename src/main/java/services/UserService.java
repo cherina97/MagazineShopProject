@@ -25,7 +25,7 @@ public class UserService {
         return userDao.create(t);
     }
 
-    public User readById(int id) {
+    public Optional<User> readById(int id) {
         return userDao.read(id);
     }
 
@@ -41,7 +41,7 @@ public class UserService {
         userDao.delete(id);
     }
 
-    public List<User> readAll() {
+    public Optional<List<User>> readAll() {
         return userDao.readAll();
     }
 }

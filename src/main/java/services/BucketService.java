@@ -4,6 +4,7 @@ import daos.BucketDao;
 import entities.Bucket;
 
 import java.util.List;
+import java.util.Optional;
 
 public class BucketService {
 
@@ -25,7 +26,7 @@ public class BucketService {
         return bucketDao.create(t);
     }
 
-    public Bucket read (int id){
+    public Optional<Bucket> read (int id){
         return bucketDao.read(id);
     }
 
@@ -38,7 +39,7 @@ public class BucketService {
         bucketDao.delete(id);
     }
 
-    public List<Bucket> readAll (){
+    public Optional<List<Bucket>> readAll (){
         return bucketDao.readAll();
     }
 }
