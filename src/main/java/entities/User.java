@@ -13,6 +13,24 @@ public class User {
     private String lastName;
     private String email;
     private String role;
+    private String password;
+
+    public User(int id, String firstName, String lastName, String email, String role, String password) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.role = role;
+        this.password = password;
+    }
+
+    public User(String firstName, String lastName, String email, String role, String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.role = role;
+        this.password = password;
+    }
 
     public static User of(ResultSet resultSet) {
         try {
@@ -21,21 +39,16 @@ public class User {
             String lastName = resultSet.getString("last_name");
             String email = resultSet.getString("email");
             String role = resultSet.getString("role");
+            String password = resultSet.getString("password");
 
-            return new User(id, firstName, lastName, email, role);
+            return new User(id, firstName, lastName, email, role, password);
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new RuntimeException();
+            throw new RuntimeException("Error");
         }
     }
 
-    public User(int id, String firstName, String lastName, String email, String role) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.role = role;
-    }
+
 
     public int getId() {
         return id;
@@ -77,6 +90,14 @@ public class User {
         this.role = role;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -86,12 +107,13 @@ public class User {
                 Objects.equals(firstName, user.firstName) &&
                 Objects.equals(lastName, user.lastName) &&
                 Objects.equals(email, user.email) &&
-                Objects.equals(role, user.role);
+                Objects.equals(role, user.role) &&
+                Objects.equals(password, user.password);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName, email, role);
+        return Objects.hash(id, firstName, lastName, email, role, password);
     }
 
     @Override
@@ -102,6 +124,7 @@ public class User {
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", role='" + role + '\'' +
+                ", password='" + password + '\'' +
                 '}';
     }
 }
