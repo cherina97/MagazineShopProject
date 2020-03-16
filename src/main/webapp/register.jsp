@@ -12,8 +12,6 @@
     <br>
     <label for="email">Email:</label> <input type="email" name="email">
     <br>
-    <label for="role">Role: </label> <input type="text" name="role">
-    <br>
     <label for="password">Password:</label> <input type="password" name="password">
     <br>
     <input type="submit" value="Sign Up">

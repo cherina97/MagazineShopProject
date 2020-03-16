@@ -2,6 +2,7 @@ package servlets;
 
 import daos.UserDao;
 import entities.User;
+import entities.UserRole;
 import org.apache.commons.lang3.ObjectUtils;
 import services.UserService;
 
@@ -26,14 +27,13 @@ public class RegisterServlet extends HttpServlet {
         String firstName = req.getParameter("firstName");
         String lastName = req.getParameter("lastName");
         String email = req.getParameter("email");
-        String role = req.getParameter("role");
         String password = req.getParameter("password");
 
-        if(ObjectUtils.allNotNull(firstName, lastName, email, role, password)){
-            userService.create(new User(firstName, lastName, email, role, password));
+        if (ObjectUtils.allNotNull(firstName, lastName, email, password)
+                && !userService.readByEmail(email).isPresent()) {
+            userService.create(new User(firstName, lastName, email, UserRole.USER.toString(), password));
             req.setAttribute("userEmail", email);
             req.getRequestDispatcher("cabinet.jsp").forward(req, resp);
-            return;
         }
 
         req.getRequestDispatcher("register.jsp").forward(req, resp);
