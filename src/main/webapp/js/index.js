@@ -26,7 +26,7 @@ $("button.register")
                     password
                 };
 
-                $.post("register", userRegistration,)
+                $.post("register", userRegistration)
                     .done(function (data, textStatus, xhr) {
                         if (xhr.status === 201) {
                             $("form")[0].reset();
@@ -60,7 +60,7 @@ $("button.login").click(function (event) {
         $.post("login", userLogin)
             .done(function (data, textStatus, xhr) {
                 if (xhr.status === 200) {
-                    window.location = "http://localhost:8888/cabinet.jsp";
+                    window.location = "http://localhost:8081/magazine_shop_project_war/cabinet.jsp";
                 } else {
                     alert("error while authorizing the user");
                 }
