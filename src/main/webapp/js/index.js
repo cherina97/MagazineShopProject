@@ -1,12 +1,18 @@
-const switchers = [...document.querySelectorAll('.switcher')]
-
-switchers.forEach(item => {
-    item.addEventListener('click', function() {
-        switchers.forEach(item => item.parentElement.classList.remove('is-active'))
-        this.parentElement.classList.add('is-active');
-    })
+$(".switcher").click(function () {
+    formSwitcher(this);
 });
 
+function formSwitcher(obj){
+    var btnId = $(obj).attr("id");
+
+    if (btnId == "sign-in-btn"){
+        $("#sign-up-btn").parent().toggleClass("is-active");
+        $("#sign-in-btn").parent().addClass('is-active');
+    } else if (btnId == "sign-up-btn"){
+        $("#sign-in-btn").parent().toggleClass("is-active");
+        $("#sign-up-btn").parent().addClass('is-active');
+    }
+}
 
 $("button.btn-signup")
     .click(
@@ -28,12 +34,12 @@ $("button.btn-signup")
                     password
                 };
 
-                $.post("register", userRegistration,)
+                $.post("register", userRegistration)
                     .done(function (data, textStatus, xhr) {
                         if (xhr.status === 201) {
                             $("form")[0].reset();
                             $("form")[1].reset();
-                            window.location = "http://localhost:8081/magazine_shop_project_war/cabinet.jsp";
+                           formSwitcher($("#sign-in-btn"));
                         } else {
                             alert("Error while creating a user!");
                         }

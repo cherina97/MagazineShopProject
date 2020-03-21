@@ -18,7 +18,7 @@
 <section class="forms-section">
     <div class="forms">
         <div class="form-wrapper is-active">
-            <button type="button" class="switcher switcher-login">
+            <button type="button" id="sign-in-btn" class="switcher switcher-login">
                 Login
                 <span class="underline"></span>
             </button>
@@ -37,8 +37,8 @@
                 <button type="submit" class="btn-login">Login</button>
             </form>
         </div>
-        <div class="form-wrapper is-passive">
-            <button type="button" class="switcher switcher-signup">
+        <div class="form-wrapper">
+            <button type="button" id="sign-up-btn" class="switcher switcher-signup">
                 Sign Up
                 <span class="underline"></span>
             </button>

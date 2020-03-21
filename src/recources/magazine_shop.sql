@@ -28,7 +28,5 @@ foreign key (product_id) references products(id),
 purchase_date date not null
 );
 
-SET GLOBAL time_zone = '+3:00';
-
-
+SET GLOBAL time_zone = '+2:00';
 
