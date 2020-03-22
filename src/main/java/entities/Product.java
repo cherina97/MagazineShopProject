@@ -11,11 +11,32 @@ public class Product {
     private String description;
     private float purchasePrice;
 
-    public Product(int id, String name, String description, float purchasePrice) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.purchasePrice = purchasePrice;
+    public static class Builder {
+        private Product product;
+
+        public Builder() {
+            product = new Product();
+        }
+        public Product.Builder withId(int id){
+            product.id = id;
+            return this;
+        }
+
+        public Product.Builder withName(String name){
+            product.name = name;
+            return this;
+        }
+        public Product.Builder withDescription(String description){
+            product.description = description;
+            return this;
+        }
+        public Product.Builder withPrice(float purchasePrice){
+            product.purchasePrice = purchasePrice;
+            return this;
+        }
+        public Product build(){
+            return product;
+        }
     }
 
     public static Product of (ResultSet resultSet){
@@ -25,7 +46,12 @@ public class Product {
             String description = resultSet.getString("description");
             Float purchasePrice = resultSet.getFloat("purchase_price");
 
-            return new Product(id, name, description, purchasePrice);
+            return new Product.Builder()
+                    .withId(id)
+                    .withName(name)
+                    .withDescription(description)
+                    .withPrice(purchasePrice)
+                    .build();
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException("Error");

@@ -5,31 +5,47 @@ import java.sql.SQLException;
 import java.util.Objects;
 
 public class User {
-    public User() {
-    }
-
-    private int id;
     private String firstName;
     private String lastName;
     private String email;
     private String role;
     private String password;
+    private int id;
 
-    public User(int id, String firstName, String lastName, String email, String role, String password) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.role = role;
-        this.password = password;
-    }
+    public static class Builder {
+        private User user;
 
-    public User(String firstName, String lastName, String email, String role, String password) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.role = role;
-        this.password = password;
+        public Builder() {
+            user = new User();
+        }
+        public Builder withId(int id){
+            user.id = id;
+            return this;
+        }
+
+        public Builder withFirstName(String firstName){
+            user.firstName = firstName;
+            return this;
+        }
+        public Builder withLastName(String lastName){
+            user.lastName = lastName;
+            return this;
+        }
+        public Builder withEmail(String email){
+            user.email = email;
+            return this;
+        }
+        public Builder withRole(String role){
+            user.role = role;
+            return this;
+        }
+        public Builder withPassword(String password){
+            user.password = password;
+            return this;
+        }
+        public User build(){
+            return user;
+        }
     }
 
     public static User of(ResultSet resultSet) {
@@ -41,13 +57,19 @@ public class User {
             String role = resultSet.getString("role");
             String password = resultSet.getString("password");
 
-            return new User(id, firstName, lastName, email, role, password);
+            return new User.Builder()
+                    .withId(id)
+                    .withFirstName(firstName)
+                    .withLastName(lastName)
+                    .withEmail(email)
+                    .withRole(role)
+                    .withPassword(password)
+                    .build();
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException("Error");
         }
     }
-
 
 
     public int getId() {
