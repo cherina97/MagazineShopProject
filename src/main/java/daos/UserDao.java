@@ -121,22 +121,21 @@ public class UserDao implements CRUD<User> {
     }
 
     @Override
-    public Optional<List<User>> readAll() {
+    public List<User> readAll() {
+        List<User> users = new ArrayList<>();
         LOG.trace("Reading all users from DB...");
         try {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(SELECT_ALL);
-
-            List<User> users = new ArrayList<>();
             while (resultSet.next()) {
                 users.add(User.of(resultSet));
             }
-            Optional<List<User>> optionalUsers = Optional.ofNullable(users);
-
-            return optionalUsers;
+            if(!users.isEmpty()){
+                return users;
+            }
         } catch (SQLException e) {
             LOG.error("Can`t read all users", e);
         }
-        return Optional.empty();
+        return null;
     }
 }

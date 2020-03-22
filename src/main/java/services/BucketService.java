@@ -39,7 +39,7 @@ public class BucketService {
         bucketDao.delete(id);
     }
 
-    public Optional<List<Bucket>> readAll (){
+    public List<Bucket> readAll (){
         return bucketDao.readAll();
     }
 }

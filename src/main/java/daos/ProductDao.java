@@ -99,21 +99,21 @@ public class ProductDao implements CRUD<Product> {
     }
 
     @Override
-    public Optional<List<Product>> readAll() {
+    public List<Product> readAll() {
+        List<Product> products = new ArrayList<>();
         LOG.trace("Reading all products from DB...");
         try {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(SELECT_ALL);
-
-            List<Product> products = new ArrayList<>();
             while (resultSet.next()) {
                 products.add(Product.of(resultSet));
             }
-            Optional<List<Product>> optionalProducts = Optional.ofNullable(products);
-            return optionalProducts;
+            if(!products.isEmpty()){
+                return products;
+            }
         } catch (SQLException e) {
             LOG.error("Can`t read all products", e);
         }
-        return Optional.empty();
+        return null;
     }
 }

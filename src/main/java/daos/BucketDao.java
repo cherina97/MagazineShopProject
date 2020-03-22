@@ -96,23 +96,22 @@ public class BucketDao implements CRUD <Bucket> {
         }
     }
 
-    //todo isEmpty
     @Override
     public List<Bucket> readAll() {
-        LOG.trace("Reading all buckets from DB...");
         List<Bucket> buckets = new ArrayList<>();
+        LOG.trace("Reading all buckets from DB...");
         try {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(SELECT_ALL);
-
             while (resultSet.next()) {
                 buckets.add(Bucket.of(resultSet));
             }
-            return buckets;
+            if(!buckets.isEmpty()){
+                return buckets;
+            }
         } catch (SQLException e) {
             LOG.error("Can`t read all buckets", e);
         }
-
         return null;
     }
 }
