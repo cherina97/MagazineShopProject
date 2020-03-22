@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class UserDao implements CRUD<User> {
-    private static final Logger log = Logger.getLogger(UserDao.class);
+    private static final Logger LOG = Logger.getLogger(UserDao.class);
 
     private Connection connection;
 
@@ -29,7 +29,7 @@ public class UserDao implements CRUD<User> {
 
     @Override
     public User create(User user) {
-        log.trace("Creating new user...");
+        LOG.trace("Creating new user...");
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_INTO, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, user.getFirstName());
@@ -40,7 +40,7 @@ public class UserDao implements CRUD<User> {
             preparedStatement.executeUpdate();
             String infoCreate = String.format("Created a new user in database with id=%d, email=%s",
                     user.getId(), user.getEmail());
-            log.info(infoCreate);
+            LOG.info(infoCreate);
 
             ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
             generatedKeys.next();
@@ -48,14 +48,14 @@ public class UserDao implements CRUD<User> {
 
             return user;
         } catch (SQLException e) {
-            log.error("Can`t create new user", e);
+            LOG.error("Can`t create new user", e);
         }
         return null;
     }
 
     @Override
     public Optional<User> read(int id) {
-        log.trace("Reading user by id...");
+        LOG.trace("Reading user by id...");
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_ID);
             preparedStatement.setInt(1, id);
@@ -65,13 +65,13 @@ public class UserDao implements CRUD<User> {
             }
         } catch (SQLException e) {
             String errorReadById = String.format("Can`t read user with id = %s", id);
-            log.error(errorReadById, e);
+            LOG.error(errorReadById, e);
         }
         return Optional.empty();
     }
 
     public Optional<User> readByEmail(String email) {
-        log.trace("Reading user by email...");
+        LOG.trace("Reading user by email...");
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_EMAIL);
             preparedStatement.setString(1, email);
@@ -82,14 +82,14 @@ public class UserDao implements CRUD<User> {
             }
         } catch (SQLException e) {
             String errorReadByEmail = String.format("Can`t read user with email = %s", email);
-            log.error(errorReadByEmail, e);
+            LOG.error(errorReadByEmail, e);
         }
         return Optional.empty();
     }
 
     @Override
     public void update(User user) {
-        log.trace("Updating user...");
+        LOG.trace("Updating user...");
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE);
             preparedStatement.setString(1, user.getFirstName());
@@ -101,28 +101,28 @@ public class UserDao implements CRUD<User> {
             preparedStatement.executeUpdate();
 
             String infoUpdate = String.format("User with id = %d was updated to user with email = %d", user.getId(), user.getEmail());
-            log.info(infoUpdate);
+            LOG.info(infoUpdate);
 
         } catch (SQLException e) {
-            log.error("Can`t update user", e);
+            LOG.error("Can`t update user", e);
         }
     }
 
     @Override
     public void delete(int id) {
-        log.trace("Deleting user...");
+        LOG.trace("Deleting user...");
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(DELETE);
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            log.error("Can`t delete user by id", e);
+            LOG.error("Can`t delete user by id", e);
         }
     }
 
     @Override
     public Optional<List<User>> readAll() {
-        log.trace("Reading all users from DB...");
+        LOG.trace("Reading all users from DB...");
         try {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(SELECT_ALL);
@@ -135,7 +135,7 @@ public class UserDao implements CRUD<User> {
 
             return optionalUsers;
         } catch (SQLException e) {
-            log.error("Can`t read all users", e);
+            LOG.error("Can`t read all users", e);
         }
         return Optional.empty();
     }
