@@ -105,7 +105,7 @@ public class User {
     }
 
     public String getRole() {
-        return role;
+        return UserRole.USER.toString();
     }
 
     public void setRole(String role) {
