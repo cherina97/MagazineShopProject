@@ -18,6 +18,12 @@ public class Product {
         this.purchasePrice = purchasePrice;
     }
 
+    public Product(String name, String description, float parseFloat) {
+        this.name = name;
+        this.description = description;
+        this.purchasePrice = purchasePrice;
+    }
+
     public static Product of (ResultSet resultSet){
         try {
             int id = resultSet.getInt("id");

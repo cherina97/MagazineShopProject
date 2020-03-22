@@ -25,13 +25,7 @@ public class RegisterServlet extends HttpServlet {
 
         //todo user by default
         if (ObjectUtils.allNotNull(firstName, lastName, email, password)) {
-            userService.create(new User.Builder()
-                    .withFirstName(firstName)
-                    .withLastName(lastName)
-                    .withEmail(email)
-                    .withRole(UserRole.USER.toString())
-                    .withPassword(password)
-                    .build());
+            userService.create(new User(firstName, lastName, email, UserRole.USER.toString(), password));
             resp.setStatus(HttpServletResponse.SC_CREATED);
             return;
         }

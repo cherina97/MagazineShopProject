@@ -31,6 +31,7 @@ jQuery(function ($) {
 
 });
 
+//display form with adding a new product
 function disp(form) {
     if (form.style.display == "none") {
         form.style.display = "block";
@@ -38,3 +39,27 @@ function disp(form) {
         form.style.display = "none";
     }
 }
+
+//create new product
+$("button.btn-createProduct")
+    .click(
+        function (event) {
+            event.preventDefault();
+            var name = $("form#form1 input#productName").val();
+            var description = $("form#form1 input#productDescription").val();
+            var price = $("form#form1 input#productPrice").val();
+
+            var product = {
+                name,
+                description,
+                price
+            };
+            $.post("product", product)
+                .done(function (data, textStatus, xhr) {
+                    alert('Success');
+                    $("form")[0].reset();
+                })
+                .fail(function (data, textStatus, xhr) {
+                    alert(data.responseText);
+                });
+        });
