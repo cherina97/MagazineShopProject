@@ -159,7 +159,7 @@ body {
         transform: translate(0, 0);
     }
     100% {
-        background: #d7e7f1;
+        background: #29170F;
         transform: translate(40%, 10px);
     }
 }
@@ -195,7 +195,7 @@ body {
         transform: translate(0, 0) scaleY(.8);
     }
     100% {
-        background: #d7e7f1;
+        background: #29170F;
         transform: translate(-40%, 10px) scaleY(.8);
     }
 }
