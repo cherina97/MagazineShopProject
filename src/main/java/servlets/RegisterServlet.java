@@ -1,6 +1,5 @@
 package servlets;
 
-import daos.UserDao;
 import entities.User;
 import entities.UserRole;
 import org.apache.commons.lang3.ObjectUtils;
@@ -13,14 +12,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/register")
+@WebServlet(name = "RegisterServlet", urlPatterns = {"/register"})
 public class RegisterServlet extends HttpServlet {
     private UserService userService = UserService.getInstance();
-
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("register.jsp").forward(req, resp);
-    }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -31,11 +25,10 @@ public class RegisterServlet extends HttpServlet {
 
         if (ObjectUtils.allNotNull(firstName, lastName, email, password)) {
             userService.create(new User(firstName, lastName, email, UserRole.USER.toString(), password));
-            req.setAttribute("userEmail", email);
-            req.getRequestDispatcher("cabinet.jsp").forward(req, resp);
+            resp.setStatus(HttpServletResponse.SC_CREATED);
             return;
         }
-
-        req.getRequestDispatcher("register.jsp").forward(req, resp);
+        resp.setContentType("text/plain");
+        resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
     }
 }
