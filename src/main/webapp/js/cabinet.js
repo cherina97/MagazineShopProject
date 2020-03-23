@@ -66,3 +66,17 @@ $("button.btn-createProduct")
                 });
         });
 
+//logout from cabinet
+$("button.btn-logout")
+    .click(
+        function () {
+
+    $.get("logout")
+        .done(function (data, textStatus, xhr) {
+            window.location = window.origin + "/magazine_shop_project_war/index.jsp";
+        })
+        .fail(function () {
+            alert("Can't logout");
+        });
+});
+

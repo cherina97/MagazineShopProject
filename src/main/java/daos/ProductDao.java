@@ -31,7 +31,7 @@ public class ProductDao implements CRUD<Product> {
             PreparedStatement preparedStatement = connection.prepareStatement(CREATE, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, product.getName());
             preparedStatement.setString(2, product.getDescription());
-            preparedStatement.setFloat(3, product.getPurchasePrice());
+            preparedStatement.setFloat(3, product.getPrice());
             preparedStatement.executeUpdate();
 
             String infoCreate = String.format("Created a new product in database with id=%d, name=%s",
@@ -44,7 +44,7 @@ public class ProductDao implements CRUD<Product> {
 
             return product;
         } catch (SQLException e) {
-            LOG.error("Can`t create new user", e);
+            LOG.error("Can`t create new product", e);
         }
         return null;
     }
@@ -73,7 +73,7 @@ public class ProductDao implements CRUD<Product> {
             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_BY_ID);
             preparedStatement.setString(1, product.getName());
             preparedStatement.setString(2, product.getDescription());
-            preparedStatement.setFloat(3, product.getPurchasePrice());
+            preparedStatement.setFloat(3, product.getPrice());
             preparedStatement.setInt(4, product.getId());
             preparedStatement.executeUpdate();
 
