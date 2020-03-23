@@ -1,6 +1,7 @@
 package daos;
 
 import entities.Bucket;
+import entities.Product;
 import org.apache.log4j.Logger;
 import recources.ConnectionUtil;
 
@@ -28,9 +29,7 @@ public class BucketDao implements CRUD <Bucket> {
         LOG.trace("Creating new bucket...");
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_INTO, Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setInt(1, bucket.getUser_id());
-            preparedStatement.setInt(2, bucket.getProduct_id());
-            preparedStatement.setDate(3, (Date) bucket.getPurchase_date());
+            setParametersForBucket(preparedStatement, bucket);
             preparedStatement.executeUpdate();
 
             String infoCreate = String.format("Created a new bucket in database with user_id=%d, product_id=%d",
@@ -46,6 +45,12 @@ public class BucketDao implements CRUD <Bucket> {
             LOG.error("Can`t create new user", e);
         }
         return null;
+    }
+    private void setParametersForBucket(PreparedStatement preparedStatement, Bucket bucket) throws SQLException {
+        preparedStatement.setInt(1, bucket.getUser_id());
+        preparedStatement.setInt(2, bucket.getProduct_id());
+        preparedStatement.setDate(3, (Date) bucket.getPurchase_date());
+
     }
 
     @Override
@@ -69,9 +74,7 @@ public class BucketDao implements CRUD <Bucket> {
         LOG.trace("Updating bucket...");
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE);
-            preparedStatement.setInt(1, bucket.getUser_id());
-            preparedStatement.setInt(2, bucket.getProduct_id());
-            preparedStatement.setDate(3, (Date) bucket.getPurchase_date());
+            setParametersForBucket(preparedStatement, bucket);
             preparedStatement.setInt(4, bucket.getId());
             preparedStatement.executeUpdate();
 

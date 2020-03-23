@@ -32,12 +32,9 @@ public class UserDao implements CRUD<User> {
         LOG.trace("Creating new user...");
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_INTO, Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setString(1, user.getFirstName());
-            preparedStatement.setString(2, user.getLastName());
-            preparedStatement.setString(3, user.getEmail());
-            preparedStatement.setString(4, user.getRole());
-            preparedStatement.setString(5, user.getPassword());
+            setParametersForUser(preparedStatement, user);
             preparedStatement.executeUpdate();
+
             String infoCreate = String.format("Created a new user in database with id=%d, email=%s",
                     user.getId(), user.getEmail());
             LOG.info(infoCreate);
@@ -51,6 +48,15 @@ public class UserDao implements CRUD<User> {
             LOG.error("Can`t create new user", e);
         }
         return null;
+    }
+
+    private void setParametersForUser(PreparedStatement preparedStatement, User user) throws SQLException {
+        preparedStatement.setString(1, user.getFirstName());
+        preparedStatement.setString(2, user.getLastName());
+        preparedStatement.setString(3, user.getEmail());
+        preparedStatement.setString(4, user.getRole());
+        preparedStatement.setString(5, user.getPassword());
+
     }
 
     @Override
@@ -92,11 +98,7 @@ public class UserDao implements CRUD<User> {
         LOG.trace("Updating user...");
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE);
-            preparedStatement.setString(1, user.getFirstName());
-            preparedStatement.setString(2, user.getLastName());
-            preparedStatement.setString(3, user.getEmail());
-            preparedStatement.setString(4, user.getRole());
-            preparedStatement.setString(5, user.getPassword());
+            setParametersForUser(preparedStatement, user);
             preparedStatement.setInt(6, user.getId());
             preparedStatement.executeUpdate();
 

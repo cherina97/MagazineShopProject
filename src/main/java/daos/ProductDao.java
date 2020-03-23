@@ -1,6 +1,7 @@
 package daos;
 
 import entities.Product;
+import entities.User;
 import org.apache.log4j.Logger;
 import recources.ConnectionUtil;
 
@@ -29,11 +30,8 @@ public class ProductDao implements CRUD<Product> {
         LOG.trace("Creating new product...");
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(CREATE, Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setString(1, product.getName());
-            preparedStatement.setString(2, product.getDescription());
-            preparedStatement.setFloat(3, product.getPrice());
+            setParametersForProduct(preparedStatement, product);
             preparedStatement.executeUpdate();
-
             String infoCreate = String.format("Created a new product in database with id=%d, name=%s",
                     product.getId(), product.getName());
             LOG.info(infoCreate);
@@ -47,6 +45,13 @@ public class ProductDao implements CRUD<Product> {
             LOG.error("Can`t create new product", e);
         }
         return null;
+    }
+
+    private void setParametersForProduct (PreparedStatement preparedStatement, Product product) throws SQLException {
+        preparedStatement.setString(1, product.getName());
+        preparedStatement.setString(2, product.getDescription());
+        preparedStatement.setFloat(3, product.getPrice());
+
     }
 
     @Override
@@ -71,9 +76,7 @@ public class ProductDao implements CRUD<Product> {
         LOG.trace("Updating зкщвгсе...");
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_BY_ID);
-            preparedStatement.setString(1, product.getName());
-            preparedStatement.setString(2, product.getDescription());
-            preparedStatement.setFloat(3, product.getPrice());
+            setParametersForProduct(preparedStatement, product);
             preparedStatement.setInt(4, product.getId());
             preparedStatement.executeUpdate();
 
