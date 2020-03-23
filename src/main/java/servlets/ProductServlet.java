@@ -20,9 +20,9 @@ public class ProductServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String name = req.getParameter("name");
         String description = req.getParameter("description");
-        String purchasePrice = req.getParameter("purchasePrice");
+        String price = req.getParameter("price");
 
-        Optional<String> errorMassage = priceValidation(purchasePrice);
+        Optional<String> errorMassage = priceValidation(price);
         if(errorMassage.isPresent()){
             resp.setContentType("application/json");
             resp.setCharacterEncoding("UTF-8");
@@ -31,21 +31,22 @@ public class ProductServlet extends HttpServlet {
             return;
         }
 
-        Product product = productService.create(
-                new Product.Builder()
+        Product product = new Product.Builder()
                 .withName(name)
                 .withDescription(description)
-                .withPrice(Float.parseFloat(purchasePrice))
-                .build());
+                .withPrice(Float.parseFloat(price))
+                .build();
+        productService.create(product);
+
         resp.setStatus(HttpServletResponse.SC_OK);
     }
 
-    private Optional<String> priceValidation(String purchasePrice) {
-        if(Strings.isNullOrEmpty(purchasePrice)){
-            return Optional.of("Price can`t be empty");
+    private Optional<String> priceValidation(String price) {
+        if (Strings.isNullOrEmpty(price)) {
+            return Optional.of("Price can't be empty");
         }
         try {
-            float parsedPrice = Float.parseFloat(purchasePrice);
+            float parsedPrice = Float.parseFloat(price);
             return parsedPrice > 0 ? Optional.empty() : Optional.of("Price can't less then zero");
         } catch (NumberFormatException e) {
             return Optional.of("Price should be numeric");

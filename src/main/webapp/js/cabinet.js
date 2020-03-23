@@ -47,14 +47,14 @@ $("button.btn-createProduct")
     .click(
         function (event) {
             event.preventDefault();
-            var name = $("form#form1 input#productName").val();
-            var description = $("form#form1 input#productDescription").val();
-            var price = $("form#form1 input#productPrice").val();
+            var name = $("input#productName").val();
+            var description = $("input#productDescription").val();
+            var price = $("input#productPrice").val();
 
             var product = {
-                name,
-                description,
-                price
+                name: name,
+                description: description,
+                price: price
             };
             $.post("product", product)
                 .done(function (data, textStatus, xhr) {

@@ -23,8 +23,6 @@ public class RegisterServlet extends HttpServlet {
         String email = req.getParameter("email");
         String password = req.getParameter("password");
 
-        //todo user by default
-
         if (ObjectUtils.allNotNull(firstName, lastName, email, password)) {
             userService.create(new User.Builder()
                     .withFirstName(firstName)

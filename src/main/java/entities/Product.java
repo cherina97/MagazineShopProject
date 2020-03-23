@@ -9,7 +9,7 @@ public class Product {
     private int id;
     private String name;
     private String description;
-    private float purchasePrice;
+    private float price;
 
     public static class Builder {
         private Product product;
@@ -30,33 +30,26 @@ public class Product {
             product.description = description;
             return this;
         }
-        public Product.Builder withPrice(float purchasePrice){
-            product.purchasePrice = purchasePrice;
+        public Product.Builder withPrice(float price){
+            product.price = price;
             return this;
         }
         public Product build(){
             return product;
         }
     }
-
-    public Product(String name, String description, float parseFloat) {
-        this.name = name;
-        this.description = description;
-        this.purchasePrice = purchasePrice;
-    }
-
     public static Product of (ResultSet resultSet){
         try {
             int id = resultSet.getInt("id");
             String name = resultSet.getString("name");
             String description = resultSet.getString("description");
-            Float purchasePrice = resultSet.getFloat("purchase_price");
+            Float price = resultSet.getFloat("price");
 
             return new Product.Builder()
                     .withId(id)
                     .withName(name)
                     .withDescription(description)
-                    .withPrice(purchasePrice)
+                    .withPrice(price)
                     .build();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -88,12 +81,12 @@ public class Product {
         this.description = description;
     }
 
-    public float getPurchasePrice() {
-        return purchasePrice;
+    public float getPrice() {
+        return price;
     }
 
-    public void setPurchasePrice(float purchasePrice) {
-        this.purchasePrice = purchasePrice;
+    public void setPrice(float price) {
+        this.price = price;
     }
 
     @Override
@@ -102,14 +95,14 @@ public class Product {
         if (o == null || getClass() != o.getClass()) return false;
         Product product = (Product) o;
         return id == product.id &&
-                Float.compare(product.purchasePrice, purchasePrice) == 0 &&
+                Float.compare(product.price, price) == 0 &&
                 Objects.equals(name, product.name) &&
                 Objects.equals(description, product.description);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, purchasePrice);
+        return Objects.hash(id, name, description, price);
     }
 
     @Override
@@ -118,7 +111,7 @@ public class Product {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
-                ", purchasePrice=" + purchasePrice +
+                ", price=" + price +
                 '}';
     }
 }

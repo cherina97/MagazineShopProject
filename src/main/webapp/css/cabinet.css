@@ -475,9 +475,11 @@ body {
     background: #2A2A2A;
     border-radius: 10px;
     height: auto;
-    width: auto;
+    width: 100px;
     font-size: 15px;
-    transform: translateX(130%);
+    position: fixed;
+    left: 70px;
+    bottom: 25px;
 }
 #form1{
     animation: hideSignup .3s ease-out forwards;
