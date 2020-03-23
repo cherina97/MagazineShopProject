@@ -121,8 +121,15 @@
                         <label for="productPrice">Price:</label>
                         <input id="productPrice" type="number" required>
                     </div>
+<<<<<<< HEAD
                 </fieldset>
                 <button type="submit" class="btn-createProduct">Create product</button>
+=======
+
+
+                </fieldset>
+                <button type="submit" class="btn-signup">Continue</button>
+>>>>>>> 6071c958a5773331905a7fa6ed623c0fa022d49c
             </form>
             <!--    <input type="button" value="казать/Скрыть" onclick="disp(document.getElementById('form1'))" />-->
         </div>

@@ -29,8 +29,9 @@ public class UserService {
         return userDao.read(id);
     }
 
-    public Optional<User> readByEmail(String email) {
-        return userDao.readByEmail(email);
+    public Optional<User> readByEmail(String email, String password) {
+        return userDao.readByEmail(email)
+                .filter(user -> user.getPassword().equals(password));
     }
 
     public void update(User t) {
@@ -41,7 +42,7 @@ public class UserService {
         userDao.delete(id);
     }
 
-    public Optional<List<User>> readAll() {
+    public List<User> readAll() {
         return userDao.readAll();
     }
 }

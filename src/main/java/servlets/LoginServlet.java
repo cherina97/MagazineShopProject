@@ -26,8 +26,8 @@ public class LoginServlet extends HttpServlet {
             return;
         }
 
-        Optional<User> user = userService.readByEmail(email);
-        if (user.isPresent() && user.get().getPassword().equals(password)) {
+        Optional<User> user = userService.readByEmail(email, password);
+        if (user.isPresent()) {
             resp.setStatus(HttpServletResponse.SC_OK);
             return;
         }

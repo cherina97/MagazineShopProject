@@ -13,5 +13,5 @@ public interface CRUD<T> {
 
     void delete(int id);
 
-    Optional<List<T>> readAll();
+    List<T> readAll();
 }

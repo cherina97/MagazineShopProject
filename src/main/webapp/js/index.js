@@ -52,9 +52,10 @@ $("button.btn-signup")
         });
 
 
-$("button.btn-login").click(function (event) {
-    // need to prevent default behaviour of the button which caused page reload
-    event.preventDefault();
+$("button.btn-login")
+    .click(
+        function (event) {
+     event.preventDefault();
 
     var email = $("form.form-login input#login-email").val();
     var password = $("form.form-login input#login-password").val();

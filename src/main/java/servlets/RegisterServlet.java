@@ -24,8 +24,14 @@ public class RegisterServlet extends HttpServlet {
         String password = req.getParameter("password");
 
         //todo user by default
+
         if (ObjectUtils.allNotNull(firstName, lastName, email, password)) {
-            userService.create(new User(firstName, lastName, email, UserRole.USER.toString(), password));
+            userService.create(new User.Builder()
+                    .withFirstName(firstName)
+                    .withLastName(lastName)
+                    .withEmail(email)
+                    .withPassword(password)
+                    .build());
             resp.setStatus(HttpServletResponse.SC_CREATED);
             return;
         }

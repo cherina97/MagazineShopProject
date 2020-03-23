@@ -31,7 +31,9 @@ jQuery(function ($) {
 
 });
 
+
 //display form with adding a new product
+
 function disp(form) {
     if (form.style.display == "none") {
         form.style.display = "block";
@@ -63,3 +65,4 @@ $("button.btn-createProduct")
                     alert(data.responseText);
                 });
         });
+

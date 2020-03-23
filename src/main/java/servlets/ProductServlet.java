@@ -30,9 +30,13 @@ public class ProductServlet extends HttpServlet {
             resp.getWriter().write(errorMassage.get());
             return;
         }
-//todo builder
+
         Product product = productService.create(
-                new Product(name, description, Float.parseFloat(purchasePrice)));
+                new Product.Builder()
+                .withName(name)
+                .withDescription(description)
+                .withPrice(Float.parseFloat(purchasePrice))
+                .build());
         resp.setStatus(HttpServletResponse.SC_OK);
     }
 
@@ -40,7 +44,12 @@ public class ProductServlet extends HttpServlet {
         if(Strings.isNullOrEmpty(purchasePrice)){
             return Optional.of("Price can`t be empty");
         }
-        float parsedPrice = Float.parseFloat(purchasePrice);
-        return parsedPrice > 0 ? Optional.empty() : Optional.of("Price can't less then zero");
+        try {
+            float parsedPrice = Float.parseFloat(purchasePrice);
+            return parsedPrice > 0 ? Optional.empty() : Optional.of("Price can't less then zero");
+        } catch (NumberFormatException e) {
+            return Optional.of("Price should be numeric");
+        }
+
     }
 }

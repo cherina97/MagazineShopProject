@@ -37,7 +37,7 @@ public class ProductService {
         productDao.delete(id);
     }
 
-    public Optional<List<Product>> readAll (){
+    public List<Product> readAll (){
         return productDao.readAll();
     }
 }
