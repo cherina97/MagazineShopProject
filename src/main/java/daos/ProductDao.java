@@ -111,12 +111,10 @@ public class ProductDao implements CRUD<Product> {
             while (resultSet.next()) {
                 products.add(Product.of(resultSet));
             }
-            if(!products.isEmpty()){
-                return products;
-            }
+            return products;
         } catch (SQLException e) {
             LOG.error("Can`t read all products", e);
         }
-        return null;
+        return products;
     }
 }

@@ -73,7 +73,9 @@
                         <div class="sidebar-submenu">
                             <ul>
                                 <li>
-                                    <a href="#" class="buttonAddProduct" onclick="disp(document.getElementById('form1'))">Add product</a>
+                                    <a href="#" class="buttonAddProduct"
+                                       onclick="disp(document.getElementById('form1'))">
+                                        Add product</a>
                                 </li>
                                 <li>
                                     <a href="#">Buy book</a>
@@ -89,7 +91,9 @@
                         <div class="sidebar-submenu">
                             <ul>
                                 <li>
-                                    <a href="#">All books</a>
+                                    <a href="#"
+                                       onclick="disp(document.getElementById('show-all-products'))">
+                                        All books</a>
                                 </li>
                             </ul>
                         </div>
@@ -107,7 +111,6 @@
     <!-- sidebar-wrapper  -->
     <main class="page-content">
         <div class="container-fluid">
-
             <form id="form1" style="display: none;">
                 <fieldset>
                     <div class="input-block">
@@ -122,12 +125,15 @@
                         <label for="productPrice">Price:</label>
                         <input id="productPrice" type="number" required>
                     </div>
-
                 </fieldset>
                 <button type="submit" class="btn-createProduct">Create product</button>
-
             </form>
-            <!--    <input type="button" value="казать/Скрыть" onclick="disp(document.getElementById('form1'))" />-->
+        </div>
+        <div id="show-all-products" style="display: none;">
+
+            <div class="product-card">
+<%--                //products here--%>
+            </div>
         </div>
 
     </main>
@@ -142,6 +148,7 @@
         crossorigin="anonymous"></script>
 
 <script src="js/cabinet.js"></script>
+<script src="js/product.js"></script>
 
 </body>
 </html>

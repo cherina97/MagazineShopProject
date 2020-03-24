@@ -31,9 +31,7 @@ jQuery(function ($) {
 
 });
 
-
 //display form with adding a new product
-
 function disp(form) {
     if (form.style.display == "none") {
         form.style.display = "block";
@@ -56,7 +54,7 @@ $("button.btn-createProduct")
                 description: description,
                 price: price
             };
-            $.post("product", product)
+            $.post("api/products", product)
                 .done(function (data, textStatus, xhr) {
                     alert('Success');
                     $("form")[0].reset();
@@ -73,10 +71,19 @@ $("button.btn-logout")
 
     $.get("logout")
         .done(function (data, textStatus, xhr) {
-            window.location = window.origin + "/magazine_shop_project_war/index.jsp";
+            window.location = window.origin + "/MagazineShop_war/index.jsp";
         })
         .fail(function () {
             alert("Can't logout");
         });
 });
+
+//display div with all products
+function disp(div) {
+    if (div.style.display == "none") {
+        div.style.display = "block";
+    } else {
+        div.style.display = "none";
+    }
+}
 
