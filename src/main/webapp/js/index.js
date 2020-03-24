@@ -70,7 +70,7 @@ $("button.btn-login")
         $.post("login", userLogin)
             .done(function (data, textStatus, xhr) {
                 if (xhr.status === 200) {
-                    window.location = window.origin + "/magazine_shop_project_war/cabinet.jsp";
+                    window.location = window.origin + "/MagazineShop_war/cabinet.jsp";
                 } else {
                     alert("Error while authorizing the user!");
                 }
