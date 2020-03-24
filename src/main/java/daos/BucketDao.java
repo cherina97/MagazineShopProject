@@ -106,12 +106,10 @@ public class BucketDao implements CRUD <Bucket> {
             while (resultSet.next()) {
                 buckets.add(Bucket.of(resultSet));
             }
-            if(!buckets.isEmpty()){
-                return buckets;
-            }
+            return buckets;
         } catch (SQLException e) {
             LOG.error("Can`t read all buckets", e);
         }
-        return null;
+        return buckets;
     }
 }

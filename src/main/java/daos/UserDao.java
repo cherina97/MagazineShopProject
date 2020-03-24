@@ -130,12 +130,10 @@ public class UserDao implements CRUD<User> {
             while (resultSet.next()) {
                 users.add(User.of(resultSet));
             }
-            if(!users.isEmpty()){
-                return users;
-            }
+            return users;
         } catch (SQLException e) {
             LOG.error("Can`t read all users", e);
         }
-        return null;
+        return users;
     }
 }
