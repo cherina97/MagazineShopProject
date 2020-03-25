@@ -525,7 +525,7 @@ body {
     border-radius: 2px;
 }
 
-.btn-createProduct {
+.btn-createProduct, btn-addToBucket {
     color: rgba(75, 26, 4, 0.81);
     background: #fbfdff;
     box-shadow: inset 0 0 0 2px rgba(75, 26, 4, 0.81);
@@ -543,11 +543,6 @@ body {
     padding: 0;
     border: 0;
     transition: all .3s ease-out;
-}
-
-#show-all-products {
-
-
 }
 
 .product-card {
@@ -584,5 +579,28 @@ a.card-link {
 .card-title {
     color: #ffffff;
 }
+.detailsWrapper{
+    background: #312C2B;
+    border-radius: 10px;
+    width: 400px;
+    height: auto;
+    font-family: "Font Awesome 5 Free";
+    font-size: 17px;
+    color: #cddbef;
+    text-align: center;
+
+
+}
+.btn-addToBucket {
+    color: rgba(75, 26, 4, 0.81);
+    background: #fbfdff;
+    box-shadow: inset 0 0 0 2px rgba(75, 26, 4, 0.81);
+    border-radius: 10px;
+    height: auto;
+    width: 140px;
+    font-size: 17px;
+    margin-bottom: 15px;
+}
+
 
 
