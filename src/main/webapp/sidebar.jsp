@@ -95,6 +95,12 @@
                             </ul>
                         </div>
                     </li>
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-book"></i>
+                            <span>Bucket</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
             <button type="submit" class="btn-logout">LOGOUT</button>

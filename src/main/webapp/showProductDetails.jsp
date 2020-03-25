@@ -20,30 +20,25 @@
     <jsp:include page="sidebar.jsp"></jsp:include>
 
     <main class="page-content">
-        <div class="container-fluid">
-            <form id="form1">
-                <fieldset>
-                    <div class="input-block">
-                        <label for="productName">Name:</label>
-                        <input id="productName" type="text" required>
-                    </div>
-                    <div class="input-block">
-                        <label for="productDescription">Description:</label>
-                        <input id="productDescription" type="text" required>
-                    </div>
-                    <div class="input-block">
-                        <label for="productPrice">Price:</label>
-                        <input id="productPrice" type="number" required>
-                    </div>
-                </fieldset>
-                <button type="submit" class="btn-createProduct">Create product</button>
 
-            </form>
+        <div class="detailsWrapper">
+
+            <p class="card-title">Product name:  <%= request.getAttribute("productName")%>
+            </p>
+            <p>Product description: <%= request.getAttribute("productDescription")%>
+            </p>
+            <p>Product price: <%= request.getAttribute("productPrice")%> грн</p>
+
+            <button type="submit" class="btn-addToBucket"
+                    product-id="<%=request.getAttribute("productId")%>">Add to bucket</button>
+            <br>
+            <a href="showAllProducts.jsp" class='card-link'>Back to all products</a>
         </div>
+
+
     </main>
 
 </div>
-
 
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -53,7 +48,8 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
 
-<script src="js/addProduct.js"></script>
 
+<script src="js/showAllProducts.js"></script>
+<script src="js/addProductToBucket.js"></script>
 </body>
 </html>

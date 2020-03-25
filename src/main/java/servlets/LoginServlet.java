@@ -32,6 +32,7 @@ public class LoginServlet extends HttpServlet {
             HttpSession session = req.getSession(true);
             session.setAttribute("userFirstName", user.get().getFirstName());
             session.setAttribute("userLastName", user.get().getLastName());
+            session.setAttribute("userId", user.get().getId());
             resp.setStatus(HttpServletResponse.SC_OK);
             return;
         }

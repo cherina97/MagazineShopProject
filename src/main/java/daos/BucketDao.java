@@ -49,7 +49,7 @@ public class BucketDao implements CRUD <Bucket> {
     private void setParametersForBucket(PreparedStatement preparedStatement, Bucket bucket) throws SQLException {
         preparedStatement.setInt(1, bucket.getUser_id());
         preparedStatement.setInt(2, bucket.getProduct_id());
-        preparedStatement.setDate(3, (Date) bucket.getPurchase_date());
+        preparedStatement.setDate(3, new Date(bucket.getPurchase_date().getTime()));
 
     }
 
