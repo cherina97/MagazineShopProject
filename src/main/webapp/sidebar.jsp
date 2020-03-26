@@ -96,7 +96,7 @@
                         </div>
                     </li>
                     <li>
-                        <a href="#">
+                        <a href="${pageContext.request.contextPath}/bucket.jsp">
                             <i class="fa fa-book"></i>
                             <span>Bucket</span>
                         </a>

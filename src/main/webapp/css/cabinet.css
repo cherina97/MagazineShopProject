@@ -553,6 +553,7 @@ body {
 
 .card-body {
     background: #312C2B;
+    opacity: 0.9;
     border-radius: 10px;
 
 }
@@ -581,6 +582,7 @@ a.card-link {
 }
 .detailsWrapper{
     background: #312C2B;
+    opacity: 0.9;
     border-radius: 10px;
     width: 400px;
     height: auto;

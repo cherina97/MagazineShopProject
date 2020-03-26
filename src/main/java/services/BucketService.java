@@ -42,4 +42,12 @@ public class BucketService {
     public List<Bucket> readAll (){
         return bucketDao.readAll();
     }
+
+    public List<Bucket> getAllByUserId(int userId) {
+        return bucketDao.getAllByUserId(userId);
+    }
+
+    public void deleteBucketByUserAndProductIds(String productId, int userId) {
+        bucketDao.deleteBucketByUserAndProductIds(productId, userId);
+    }
 }

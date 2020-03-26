@@ -5,6 +5,7 @@ import entities.Product;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public class ProductService {
     private static ProductService productService;
@@ -39,5 +40,9 @@ public class ProductService {
 
     public List<Product> readAll (){
         return productDao.readAll();
+    }
+
+    public List<Product> readAllByIds(Set<Integer> productIds) {
+        return productDao.readAllByIds(productIds);
     }
 }

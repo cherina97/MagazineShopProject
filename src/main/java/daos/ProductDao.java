@@ -9,6 +9,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class ProductDao implements CRUD<Product> {
     private static final Logger LOG = Logger.getLogger(ProductDao.class);
@@ -18,11 +20,13 @@ public class ProductDao implements CRUD<Product> {
         this.connection = ConnectionUtil.getConnection();
     }
 
+
     private static String SELECT_ALL = "select * from products";
     private static String CREATE = "insert into products(`name`, `description`, `price`) values (?,?,?)";
     private static String READ_BY_ID = "select * from products where id =?";
     private static String UPDATE_BY_ID = "update products set name=?, description = ?, price = ? where id = ?";
     private static String DELETE_BY_ID = "delete from products where id=?";
+    private static String READ_ALL_IN = "select * from products where id in ";
 
 
     @Override
@@ -46,7 +50,7 @@ public class ProductDao implements CRUD<Product> {
         return product;
     }
 
-    private void setParametersForProduct (PreparedStatement preparedStatement, Product product) throws SQLException {
+    private void setParametersForProduct(PreparedStatement preparedStatement, Product product) throws SQLException {
         preparedStatement.setString(1, product.getName());
         preparedStatement.setString(2, product.getDescription());
         preparedStatement.setFloat(3, product.getPrice());
@@ -60,7 +64,7 @@ public class ProductDao implements CRUD<Product> {
             PreparedStatement preparedStatement = connection.prepareStatement(READ_BY_ID);
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()){
+            if (resultSet.next()) {
                 return Optional.of(Product.of(resultSet));
             }
         } catch (SQLException e) {
@@ -112,6 +116,23 @@ public class ProductDao implements CRUD<Product> {
             }
         } catch (SQLException e) {
             LOG.error("Can`t read all products", e);
+        }
+        return products;
+    }
+
+    public List<Product> readAllByIds(Set<Integer> productIds) {
+        List<Product> products = new ArrayList<>();
+        try {
+            String ids = productIds.stream().map(String::valueOf).collect(Collectors.joining(","));
+            String query = String.format("%s (%s)", READ_ALL_IN, ids);
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()){
+                products.add(Product.of(resultSet));
+            }
+        } catch (SQLException e) {
+            LOG.error("Can`t read products by IDs", e);
         }
         return products;
     }
