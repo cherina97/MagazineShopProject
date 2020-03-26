@@ -43,11 +43,10 @@ public class UserDao implements CRUD<User> {
             generatedKeys.next();
             user.setId(generatedKeys.getInt(1));
 
-            return user;
         } catch (SQLException e) {
             LOG.error("Can`t create new user", e);
         }
-        return null;
+        return user;
     }
 
     private void setParametersForUser(PreparedStatement preparedStatement, User user) throws SQLException {
@@ -132,12 +131,9 @@ public class UserDao implements CRUD<User> {
             while (resultSet.next()) {
                 users.add(User.of(resultSet));
             }
-            if(!users.isEmpty()){
-                return users;
-            }
         } catch (SQLException e) {
             LOG.error("Can`t read all users", e);
         }
-        return null;
+        return users;
     }
 }

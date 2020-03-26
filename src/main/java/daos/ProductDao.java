@@ -40,11 +40,10 @@ public class ProductDao implements CRUD<Product> {
             generatedKeys.next();
             product.setId(generatedKeys.getInt(1));
 
-            return product;
         } catch (SQLException e) {
             LOG.error("Can`t create new product", e);
         }
-        return null;
+        return product;
     }
 
     private void setParametersForProduct (PreparedStatement preparedStatement, Product product) throws SQLException {
@@ -111,7 +110,6 @@ public class ProductDao implements CRUD<Product> {
             while (resultSet.next()) {
                 products.add(Product.of(resultSet));
             }
-            return products;
         } catch (SQLException e) {
             LOG.error("Can`t read all products", e);
         }

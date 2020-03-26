@@ -40,11 +40,10 @@ public class BucketDao implements CRUD <Bucket> {
             generatedKeys.next();
             bucket.setId(generatedKeys.getInt(1));
 
-            return bucket;
         } catch (SQLException e) {
             LOG.error("Can`t create new user", e);
         }
-        return null;
+        return bucket;
     }
     private void setParametersForBucket(PreparedStatement preparedStatement, Bucket bucket) throws SQLException {
         preparedStatement.setInt(1, bucket.getUser_id());
@@ -109,12 +108,9 @@ public class BucketDao implements CRUD <Bucket> {
             while (resultSet.next()) {
                 buckets.add(Bucket.of(resultSet));
             }
-            if(!buckets.isEmpty()){
-                return buckets;
-            }
         } catch (SQLException e) {
             LOG.error("Can`t read all buckets", e);
         }
-        return null;
+        return buckets;
     }
 }
