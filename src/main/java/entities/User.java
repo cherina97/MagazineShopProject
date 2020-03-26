@@ -105,11 +105,19 @@ public class User {
     }
 
     public String getRole() {
-        return UserRole.USER.toString();
+        if (role == null) {
+            return this.role = UserRole.USER.name();
+        } else {
+            return this.role = role;
+        }
     }
 
     public void setRole(String role) {
-        this.role = role;
+        if (role == null) {
+            this.role = UserRole.USER.name();
+        } else {
+            this.role = role;
+        }
     }
 
     public String getPassword() {
