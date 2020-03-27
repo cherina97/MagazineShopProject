@@ -35,7 +35,6 @@ public class BucketService {
     }
 
     public void delete (int id){
-
         bucketDao.delete(id);
     }
 
@@ -47,7 +46,7 @@ public class BucketService {
         return bucketDao.getAllByUserId(userId);
     }
 
-    public void deleteBucketByUserAndProductIds(String productId, int userId) {
+    public void deleteBucketByUserAndProductIds(int productId, int userId) {
         bucketDao.deleteBucketByUserAndProductIds(productId, userId);
     }
 }

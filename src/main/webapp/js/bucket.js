@@ -3,43 +3,20 @@ $(window).on("load resize ", function () {
     $('.tbl-header').css({'padding-right': scrollWidth});
 }).resize();
 
-function addListenerToRemoveButton(){
-    $("button.remove-from-bucket")
-        .click(function (event) {
-            event.preventDefault();
-
-            var productId = event.target.attributes["product-id"].value;
-
-            $.ajax({
-                    url: 'api/buckets?productId' + productId,
-                    type: 'delete'
-            })
-                .done(function (pruducts) {
-                    alert("Products is being successfully deleted from the bucket");
-                    location.reload();
-                })
-                .fail(function () {
-                    alert("Error while deleting product from a bucket");
-                });
-
-        })
-
-};
-
 $.get("api/buckets")
-    .done(function (products) {
+    .done(function (data) {
         var tableContent = "";
-        jQuery.each(products, function (i, product) {
+        jQuery.each(data, function (i, item) {
             var number = i + 1;
             tableContent +=
                 "<tr>" +
                 "<th scope=\"row\">" + number + "</th>" +
-                "<td>" + product.name + "</td>" +
-                "<td>" + product.description + "</td>" +
-                "<td>" + product.price + "</td>" +
+                "<td>" + item.product.name + "</td>" +
+                "<td>" + item.product.description + "</td>" +
+                "<td>" + item.product.price + "</td>" +
+                "<td>" + item.purchase_date + "</td>" +
                 "<td>" +
-                "<button type=\"button\" class=\"remove-from-bucket\" product-id = '"
-                + product.id + "'> Remove </button>" + "<td>" +
+                "<button type=\"button\" class=\"remove-from-bucket\" bucket-id = '"+ item.id + "'> Remove </button>" + "</td>" +
                 "</tr>";
         });
         $('.tbl-content').html(tableContent);
@@ -49,3 +26,23 @@ $.get("api/buckets")
         alert("Can't remove from bucket");
     });
 
+function addListenerToRemoveButton(){
+    $("button.remove-from-bucket")
+        .click(function (event) {
+            event.preventDefault();
+
+            var bucketId = event.target.attributes["bucket-id"].value;
+
+            $.ajax({
+                url: 'api/buckets?bucketId=' + bucketId,
+                type: 'DELETE'
+            })
+                .done(function () {
+                    alert("Products is being successfully deleted from the bucket");
+                    location.reload();
+                })
+                .fail(function () {
+                    alert("Error while deleting product from a bucket");
+                });
+        })
+};

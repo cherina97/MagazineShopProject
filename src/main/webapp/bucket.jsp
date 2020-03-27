@@ -30,6 +30,7 @@
                         <th>Name</th>
                         <th>Description</th>
                         <th>Price</th>
+                        <th>Date</th>
                         <th></th>
                     </tr>
                     </thead>

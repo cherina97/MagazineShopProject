@@ -6,9 +6,9 @@ import java.util.Date;
 import java.util.Objects;
 
 public class Bucket {
-    private int id;
-    private int user_id;
-    private int product_id;
+    private Integer id;
+    private Integer user_id;
+    private Integer product_id;
     private Date purchase_date;
 
     public static class Builder {
@@ -17,16 +17,16 @@ public class Bucket {
         public Builder() {
             bucket = new Bucket();
         }
-        public Bucket.Builder withId(int id){
+        public Bucket.Builder withId(Integer id){
             bucket.id = id;
             return this;
         }
 
-        public Bucket.Builder withUserId(int user_id){
+        public Bucket.Builder withUserId(Integer user_id){
             bucket.user_id = user_id;
             return this;
         }
-        public Bucket.Builder withProductId(int product_id){
+        public Bucket.Builder withProductId(Integer product_id){
             bucket.product_id = product_id;
             return this;
         }
@@ -41,9 +41,9 @@ public class Bucket {
 
     public static Bucket of(ResultSet resultSet) {
         try {
-            int id = resultSet.getInt("id");
-            int user_id = resultSet.getInt("user_id");
-            int product_id = resultSet.getInt("product_id");
+            Integer id = resultSet.getInt("id");
+            Integer user_id = resultSet.getInt("user_id");
+            Integer product_id = resultSet.getInt("product_id");
             Date purchase_date = resultSet.getDate("purchase_date");
 
             return new Bucket.Builder()
@@ -58,27 +58,27 @@ public class Bucket {
         }
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public int getUser_id() {
+    public Integer getUser_id() {
         return user_id;
     }
 
-    public void setUser_id(int user_id) {
+    public void setUser_id(Integer user_id) {
         this.user_id = user_id;
     }
 
-    public int getProduct_id() {
+    public Integer getProduct_id() {
         return product_id;
     }
 
-    public void setProduct_id(int product_id) {
+    public void setProduct_id(Integer product_id) {
         this.product_id = product_id;
     }
 
@@ -95,9 +95,9 @@ public class Bucket {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Bucket bucket = (Bucket) o;
-        return id == bucket.id &&
-                user_id == bucket.user_id &&
-                product_id == bucket.product_id &&
+        return Objects.equals(id, bucket.id) &&
+                Objects.equals(user_id, bucket.user_id) &&
+                Objects.equals(product_id, bucket.product_id) &&
                 Objects.equals(purchase_date, bucket.purchase_date);
     }
 

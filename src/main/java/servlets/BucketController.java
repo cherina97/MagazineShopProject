@@ -1,6 +1,7 @@
 package servlets;
 
 import com.google.gson.Gson;
+import dtos.BucketProductDto;
 import entities.Bucket;
 import entities.Product;
 import services.BucketService;
@@ -14,7 +15,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @WebServlet("/api/buckets")
@@ -38,11 +41,25 @@ public class BucketController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         int userId = (int) req.getSession().getAttribute("userId");
 
-        List<Bucket> allByUserId = bucketService.getAllByUserId(userId);
-        Set<Integer> productIds = allByUserId.stream().map(Bucket::getProduct_id).collect(Collectors.toSet());
-        List<Product> products = productService.readAllByIds(productIds);
+        List<Bucket> buckets = bucketService.getAllByUserId(userId);
+        Set<Integer> productIds = buckets.stream().map(Bucket::getProduct_id).collect(Collectors.toSet());
 
-        String json = new Gson().toJson(products);
+        Map<Integer, Product> productsGroupById = productService.readAllByIds(productIds)
+                .stream().collect(Collectors.toMap(Product::getId, Function.identity()));
+
+        List<BucketProductDto> result = buckets.stream().map(bucket -> {
+            BucketProductDto dto = new BucketProductDto();
+            dto.id = bucket.getId();
+            dto.purchase_date = bucket.getPurchase_date();
+
+            Integer product_id = bucket.getProduct_id();
+            dto.product = productsGroupById.get(product_id);
+
+            return dto;
+        }).collect(Collectors.toList());
+
+
+        String json = new Gson().toJson(result);
         resp.setContentType("application/json");
         resp.setCharacterEncoding("UTF-8");
         resp.getWriter().write(json);
@@ -50,10 +67,8 @@ public class BucketController extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) {
-        String productId = req.getParameter("productId");
-        int userId = (int) req.getSession().getAttribute("userId");
-
-        bucketService.deleteBucketByUserAndProductIds(productId, userId);
+        int bucketId = Integer.parseInt(req.getParameter("bucketId"));
+        bucketService.delete(bucketId);
     }
 }
 

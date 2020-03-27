@@ -93,7 +93,7 @@ public class BucketDao implements CRUD<Bucket> {
 
     @Override
     public void delete(int id) {
-        LOG.trace("Deleting backet...");
+        LOG.trace("Deleting bucket...");
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(DELETE);
             preparedStatement.setInt(1, id);
@@ -135,11 +135,11 @@ public class BucketDao implements CRUD<Bucket> {
         return buckets;
     }
 
-    public void deleteBucketByUserAndProductIds(String productId, int userId) {
+    public void deleteBucketByUserAndProductIds(int productId, int userId) {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_BY_USER_AND_PRODUCT_IDS);
             preparedStatement.setInt(1, userId);
-            preparedStatement.setInt(2, Integer.parseInt(productId));
+            preparedStatement.setInt(2, productId);
             preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
