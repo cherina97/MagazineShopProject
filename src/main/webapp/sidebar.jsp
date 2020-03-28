@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
 <html>
@@ -38,7 +38,14 @@
               <br>
             <strong>${sessionScope['userLastName']}</strong>
           </span>
-                    <span class="user-role">User</span>
+                    <c:if test="${sessionScope['userRole'] == \"ADMIN\"}">
+                        <span class="user-role">ADMIN</span>
+                    </c:if>
+
+                    <c:if test="${sessionScope['userRole'] == \"USER\"}">
+                        <span class="user-role">USER</span>
+                    </c:if>
+
                     <span class="user-status">
             <i class="fa fa-circle"></i>
             <span>Online</span>
@@ -71,10 +78,12 @@
                         </a>
                         <div class="sidebar-submenu">
                             <ul>
-                                <li>
-                                    <a href="${pageContext.request.contextPath}/addProduct" class="buttonAddProduct">
-                                        Add product</a>
-                                </li>
+                                <c:if test="${sessionScope['userRole'] == \"ADMIN\"}">
+                                    <li>
+                                        <a href="${pageContext.request.contextPath}/addProduct" class="buttonAddProduct">
+                                            Add product</a>
+                                    </li>
+                                </c:if>
                                 <li>
                                     <a href="#">Buy book</a>
                                 </li>
