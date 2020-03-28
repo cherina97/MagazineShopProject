@@ -14,6 +14,7 @@ public class User {
 
     public static class Builder {
         private User user;
+        private String role;
 
         public Builder() {
             user = new User();
@@ -44,6 +45,7 @@ public class User {
             return this;
         }
         public User build(){
+            user.setRole(role);
             return user;
         }
     }
@@ -105,11 +107,7 @@ public class User {
     }
 
     public String getRole() {
-        if (role == null) {
-            return this.role = UserRole.USER.name();
-        } else {
-            return this.role = role;
-        }
+        return role;
     }
 
     public void setRole(String role) {
