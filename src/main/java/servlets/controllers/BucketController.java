@@ -1,4 +1,4 @@
-package servlets;
+package servlets.controllers;
 
 import com.google.gson.Gson;
 import dtos.BucketProductDto;

@@ -72,7 +72,7 @@
                         <div class="sidebar-submenu">
                             <ul>
                                 <li>
-                                    <a href="${pageContext.request.contextPath}/addProduct.jsp" class="buttonAddProduct">
+                                    <a href="${pageContext.request.contextPath}/addProduct" class="buttonAddProduct">
                                         Add product</a>
                                 </li>
                                 <li>
@@ -89,14 +89,14 @@
                         <div class="sidebar-submenu">
                             <ul>
                                 <li>
-                                    <a href="${pageContext.request.contextPath}/showAllProducts.jsp">
+                                    <a href="${pageContext.request.contextPath}/showAllProducts">
                                         All books</a>
                                 </li>
                             </ul>
                         </div>
                     </li>
                     <li>
-                        <a href="${pageContext.request.contextPath}/bucket.jsp">
+                        <a href="${pageContext.request.contextPath}/bucket">
                             <i class="fa fa-book"></i>
                             <span>Bucket</span>
                         </a>

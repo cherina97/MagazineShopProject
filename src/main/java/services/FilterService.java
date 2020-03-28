@@ -39,10 +39,10 @@ public class FilterService {
             if (userRoles.contains(role)){
                 filterChain.doFilter(req, resp);
             } else {
-                req.getRequestDispatcher("cabinet.jsp").forward(req, resp);
+                req.getRequestDispatcher("cabinet").forward(req, resp);
             }
         } catch (Exception e) {
-            req.getRequestDispatcher("cabinet.jsp").forward(req, resp);
+            req.getRequestDispatcher("cabinet").forward(req, resp);
         }
 
 

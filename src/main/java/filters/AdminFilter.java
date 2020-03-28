@@ -16,7 +16,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 
 
-@WebFilter({"/addProduct.jsp"})
+@WebFilter({"/addProduct"})
 public class AdminFilter implements Filter {
 
     private FilterService filterService = FilterService.getInstance();

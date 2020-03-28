@@ -32,7 +32,7 @@
             <button type="submit" class="btn-addToBucket"
                     product-id="<%=request.getAttribute("productId")%>">Add to bucket</button>
             <br>
-            <a href="showAllProducts.jsp" class='card-link'>Back to all products</a>
+            <a href="${pageContext.request.contextPath}/showAllProducts" class='card-link'>Back to all products</a>
         </div>
 
 

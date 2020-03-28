@@ -1,4 +1,4 @@
-package servlets;
+package servlets.controllers;
 
 import com.google.common.base.Strings;
 import com.google.gson.Gson;

@@ -38,7 +38,7 @@ $("button.btn-logout")
 
     $.get("logout")
         .done(function (data, textStatus, xhr) {
-            window.location = window.origin + "/MagazineShop_war/index.jsp";
+            window.location = window.origin + "/MagazineShop_war/";
         })
         .fail(function () {
             alert("Can't logout");
