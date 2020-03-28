@@ -33,6 +33,7 @@ public class LoginServlet extends HttpServlet {
             session.setAttribute("userFirstName", user.get().getFirstName());
             session.setAttribute("userLastName", user.get().getLastName());
             session.setAttribute("userId", user.get().getId());
+            session.setAttribute("userRole", user.get().getRole());
             resp.setStatus(HttpServletResponse.SC_OK);
             return;
         }

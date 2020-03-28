@@ -123,7 +123,10 @@ public class ProductDao implements CRUD<Product> {
     public List<Product> readAllByIds(Set<Integer> productIds) {
         List<Product> products = new ArrayList<>();
         try {
-            String ids = productIds.stream().map(String::valueOf).collect(Collectors.joining(","));
+            String ids = productIds.stream()
+                    .map(String::valueOf)
+                    .collect(Collectors.joining(","));
+
             String query = String.format("%s (%s)", READ_ALL_IN, ids);
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             ResultSet resultSet = preparedStatement.executeQuery();

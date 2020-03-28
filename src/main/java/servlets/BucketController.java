@@ -13,10 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -42,22 +39,26 @@ public class BucketController extends HttpServlet {
         int userId = (int) req.getSession().getAttribute("userId");
 
         List<Bucket> buckets = bucketService.getAllByUserId(userId);
-        Set<Integer> productIds = buckets.stream().map(Bucket::getProduct_id).collect(Collectors.toSet());
 
-        Map<Integer, Product> productsGroupById = productService.readAllByIds(productIds)
-                .stream().collect(Collectors.toMap(Product::getId, Function.identity()));
+        Set<Integer> productIds = buckets.stream()
+                .map(Bucket::getProduct_id)
+                .collect(Collectors.toSet());
 
-        List<BucketProductDto> result = buckets.stream().map(bucket -> {
-            BucketProductDto dto = new BucketProductDto();
-            dto.id = bucket.getId();
-            dto.purchase_date = bucket.getPurchase_date();
+        Map<Integer, Product> productsGroupedById = productService.readAllByIds(productIds)
+                .stream()
+                .collect(Collectors.toMap(Product::getId, Function.identity()));
 
-            Integer product_id = bucket.getProduct_id();
-            dto.product = productsGroupById.get(product_id);
+        List<BucketProductDto> result = buckets.stream()
+                .map(bucket -> {
+                    BucketProductDto dto = new BucketProductDto();
+                    dto.id = bucket.getId();
+                    dto.purchase_date = bucket.getPurchase_date();
+                    int productId = bucket.getProduct_id();
 
-            return dto;
-        }).collect(Collectors.toList());
-
+                    dto.product = productsGroupedById.get(productId);
+                    return dto;
+                })
+                .collect(Collectors.toList());
 
         String json = new Gson().toJson(result);
         resp.setContentType("application/json");
@@ -66,9 +67,18 @@ public class BucketController extends HttpServlet {
     }
 
     @Override
-    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) {
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         int bucketId = Integer.parseInt(req.getParameter("bucketId"));
-        bucketService.delete(bucketId);
+        int userId = (int) req.getSession().getAttribute("userId");
+        Optional<Bucket> bucketIdRead = bucketService.read(bucketId);
+
+        if(bucketIdRead.get().getUser_id() == userId){
+            bucketService.delete(bucketId);
+        } else {
+            resp.getWriter().write("Error! It's not your bucket!");
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+        }
+
     }
 }
 
