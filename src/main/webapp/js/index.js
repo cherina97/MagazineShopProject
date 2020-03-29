@@ -52,9 +52,10 @@ $("button.btn-signup")
         });
 
 
-$("button.btn-login").click(function (event) {
-    // need to prevent default behaviour of the button which caused page reload
-    event.preventDefault();
+$("button.btn-login")
+    .click(
+        function (event) {
+     event.preventDefault();
 
     var email = $("form.form-login input#login-email").val();
     var password = $("form.form-login input#login-password").val();
@@ -69,7 +70,7 @@ $("button.btn-login").click(function (event) {
         $.post("login", userLogin)
             .done(function (data, textStatus, xhr) {
                 if (xhr.status === 200) {
-                    window.location = "http://localhost:8081/magazine_shop_project_war/cabinet.jsp";
+                    window.location = window.origin + "/MagazineShop_war/cabinet.jsp";
                 } else {
                     alert("Error while authorizing the user!");
                 }

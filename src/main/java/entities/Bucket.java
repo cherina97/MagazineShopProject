@@ -11,11 +11,32 @@ public class Bucket {
     private int product_id;
     private Date purchase_date;
 
-    public Bucket(int id, int user_id, int product_id, Date purchase_date) {
-        this.id = id;
-        this.user_id = user_id;
-        this.product_id = product_id;
-        this.purchase_date = purchase_date;
+    public static class Builder {
+        private Bucket bucket;
+
+        public Builder() {
+            bucket = new Bucket();
+        }
+        public Bucket.Builder withId(int id){
+            bucket.id = id;
+            return this;
+        }
+
+        public Bucket.Builder withUserId(int user_id){
+            bucket.user_id = user_id;
+            return this;
+        }
+        public Bucket.Builder withProductId(int product_id){
+            bucket.product_id = product_id;
+            return this;
+        }
+        public Bucket.Builder withDate(Date purchase_date){
+            bucket.purchase_date = purchase_date;
+            return this;
+        }
+        public Bucket build(){
+            return bucket;
+        }
     }
 
     public static Bucket of(ResultSet resultSet) {
@@ -25,7 +46,12 @@ public class Bucket {
             int product_id = resultSet.getInt("product_id");
             Date purchase_date = resultSet.getDate("purchase_date");
 
-            return new Bucket(id, user_id, product_id, purchase_date);
+            return new Bucket.Builder()
+                    .withId(id)
+                    .withUserId(user_id)
+                    .withProductId(product_id)
+                    .withDate(purchase_date)
+                    .build();
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException();

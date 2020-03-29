@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class BucketDao implements CRUD <Bucket> {
-    private static final Logger log = Logger.getLogger(BucketDao.class);
+    private static final Logger LOG = Logger.getLogger(BucketDao.class);
     private Connection connection;
 
     public BucketDao() {
@@ -25,7 +25,7 @@ public class BucketDao implements CRUD <Bucket> {
             "INSERT INTO buckets(user_id, product_id, purchase_date) values(?, ?, ?)";
     @Override
     public Bucket create(Bucket bucket) {
-        log.trace("Creating new bucket...");
+        LOG.trace("Creating new bucket...");
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_INTO, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setInt(1, bucket.getUser_id());
@@ -35,7 +35,7 @@ public class BucketDao implements CRUD <Bucket> {
 
             String infoCreate = String.format("Created a new bucket in database with user_id=%d, product_id=%d",
                     bucket.getUser_id(), bucket.getProduct_id());
-            log.info(infoCreate);
+            LOG.info(infoCreate);
 
             ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
             generatedKeys.next();
@@ -43,7 +43,7 @@ public class BucketDao implements CRUD <Bucket> {
 
             return bucket;
         } catch (SQLException e) {
-            log.error("Can`t create new user", e);
+            LOG.error("Can`t create new user", e);
         }
         return null;
     }
@@ -59,14 +59,14 @@ public class BucketDao implements CRUD <Bucket> {
             }
         } catch (SQLException e) {
             String errorReadById = String.format("Can`t read bucket with id = %s", id);
-            log.error(errorReadById, e);
+            LOG.error(errorReadById, e);
         }
         return Optional.empty();
     }
 
     @Override
     public void update(Bucket bucket) {
-        log.trace("Updating bucket...");
+        LOG.trace("Updating bucket...");
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE);
             preparedStatement.setInt(1, bucket.getUser_id());
@@ -77,41 +77,39 @@ public class BucketDao implements CRUD <Bucket> {
 
             String infoUpdate = String.format("Bucket with id = %d was updated to bucket with user_id=%d, product_id=%d",
                     bucket.getUser_id(), bucket.getProduct_id());
-            log.info(infoUpdate);
+            LOG.info(infoUpdate);
 
         } catch (SQLException e) {
-            log.error("Can`t update user", e);
+            LOG.error("Can`t update user", e);
         }
     }
 
     @Override
     public void delete(int id) {
-        log.trace("Deleting backet...");
+        LOG.trace("Deleting backet...");
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(DELETE);
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            log.error("Can`t delete user by id", e);
+            LOG.error("Can`t delete user by id", e);
         }
     }
 
     @Override
-    public Optional<List<Bucket>> readAll() {
-        log.trace("Reading all buckets from DB...");
+    public List<Bucket> readAll() {
+        List<Bucket> buckets = new ArrayList<>();
+        LOG.trace("Reading all buckets from DB...");
         try {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(SELECT_ALL);
-
-            List<Bucket> buckets = new ArrayList<>();
             while (resultSet.next()) {
                 buckets.add(Bucket.of(resultSet));
             }
-            Optional<List<Bucket>> optionalBuckets = Optional.ofNullable(buckets);
-            return optionalBuckets;
+            return buckets;
         } catch (SQLException e) {
-            log.error("Can`t read all buckets", e);
+            LOG.error("Can`t read all buckets", e);
         }
-        return Optional.empty();
+        return buckets;
     }
 }

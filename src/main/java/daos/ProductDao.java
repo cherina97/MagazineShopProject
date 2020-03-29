@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class ProductDao implements CRUD<Product> {
-    private static final Logger log = Logger.getLogger(ProductDao.class);
+    private static final Logger LOG = Logger.getLogger(ProductDao.class);
     private Connection connection;
 
     public ProductDao() {
@@ -26,18 +26,17 @@ public class ProductDao implements CRUD<Product> {
 
     @Override
     public Product create(Product product) {
-        log.trace("Creating new product...");
+        LOG.trace("Creating new product...");
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(CREATE, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, product.getName());
             preparedStatement.setString(2, product.getDescription());
             preparedStatement.setFloat(3, product.getPurchasePrice());
-            preparedStatement.setInt(4, product.getId());
             preparedStatement.executeUpdate();
 
             String infoCreate = String.format("Created a new product in database with id=%d, name=%s",
                     product.getId(), product.getName());
-            log.info(infoCreate);
+            LOG.info(infoCreate);
 
             ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
             generatedKeys.next();
@@ -45,14 +44,14 @@ public class ProductDao implements CRUD<Product> {
 
             return product;
         } catch (SQLException e) {
-            log.error("Can`t create new user", e);
+            LOG.error("Can`t create new user", e);
         }
         return null;
     }
 
     @Override
     public Optional<Product> read(int id) {
-        log.trace("Reading product by id...");
+        LOG.trace("Reading product by id...");
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(READ_BY_ID);
             preparedStatement.setInt(1, id);
@@ -62,14 +61,14 @@ public class ProductDao implements CRUD<Product> {
             }
         } catch (SQLException e) {
             String errorReadById = String.format("Can`t read product with id = %s", id);
-            log.error(errorReadById, e);
+            LOG.error(errorReadById, e);
         }
         return Optional.empty();
     }
 
     @Override
     public void update(Product product) {
-        log.trace("Updating зкщвгсе...");
+        LOG.trace("Updating зкщвгсе...");
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_BY_ID);
             preparedStatement.setString(1, product.getName());
@@ -80,41 +79,39 @@ public class ProductDao implements CRUD<Product> {
 
             String infoUpdate = String.format("Product with id = %d was updated to product with name = %d",
                     product.getId(), product.getName());
-            log.info(infoUpdate);
+            LOG.info(infoUpdate);
 
         } catch (SQLException e) {
-            log.error("Can`t update product", e);
+            LOG.error("Can`t update product", e);
         }
     }
 
     @Override
     public void delete(int id) {
-        log.trace("Deleting product...");
+        LOG.trace("Deleting product...");
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_BY_ID);
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            log.error("Can`t delete user by id", e);
+            LOG.error("Can`t delete user by id", e);
         }
     }
 
     @Override
-    public Optional<List<Product>> readAll() {
-        log.trace("Reading all products from DB...");
+    public List<Product> readAll() {
+        List<Product> products = new ArrayList<>();
+        LOG.trace("Reading all products from DB...");
         try {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(SELECT_ALL);
-
-            List<Product> products = new ArrayList<>();
             while (resultSet.next()) {
                 products.add(Product.of(resultSet));
             }
-            Optional<List<Product>> optionalProducts = Optional.ofNullable(products);
-            return optionalProducts;
+            return products;
         } catch (SQLException e) {
-            log.error("Can`t read all products", e);
+            LOG.error("Can`t read all products", e);
         }
-        return Optional.empty();
+        return products;
     }
 }
