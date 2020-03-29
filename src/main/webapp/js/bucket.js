@@ -11,6 +11,7 @@ function showAlertSuccess() {
 $.get("api/buckets")
     .done(function (data) {
         var tableContent = "";
+        var totalPrice = 0;
         jQuery.each(data, function (i, item) {
             var number = i + 1;
             tableContent +=
@@ -23,8 +24,10 @@ $.get("api/buckets")
                 "<td>" +
                 "<button type=\"button\" class=\"remove-from-bucket\" bucket-id = '"+ item.id + "'> Remove </button>" + "</td>" +
                 "</tr>";
+            totalPrice += item.product.price;
         });
         $('.tbl-content').html(tableContent);
+        $('.totalPriceCount').html(totalPrice);
         addListenerToRemoveButton();
     })
     .fail(function () {

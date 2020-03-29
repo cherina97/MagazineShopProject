@@ -64,3 +64,21 @@ td{
     margin-top: 20px;
     color: #ffffff;
 }
+.totalPrice{
+    background: rgba(52, 46, 45, 0.55);
+    width: 200px;
+    float: right;
+    margin-top: 20px;
+    color: #ffffff;
+    padding-left: 50px;
+    font-size: 15px;
+}
+.btn-buy{
+    color: #fbfdff;
+    background: #2A2A2A;
+    border-radius: 10px;
+    height: auto;
+    width: 200px;
+    float: left;
+    margin-top: -5px;
+}

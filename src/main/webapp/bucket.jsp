@@ -45,6 +45,9 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+            <p class="totalPrice">Total price: <span class="totalPriceCount"></span> </p>
+            <br>
+            <button type="submit" class="btn-buy">BUY</button>
         </div>
     </main>
 
