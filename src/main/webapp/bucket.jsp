@@ -29,7 +29,7 @@
                         <th>#</th>
                         <th>Name</th>
                         <th>Description</th>
-                        <th>Price</th>
+                        <th class="pricePr">Price</th>
                         <th>Date</th>
                         <th></th>
                     </tr>
@@ -38,6 +38,12 @@
 
                     </tbody>
                 </table>
+            </div>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <b>Success!</b> Products is being successfully deleted from the bucket!
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
         </div>
     </main>

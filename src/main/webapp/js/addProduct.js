@@ -1,3 +1,7 @@
+function showAlertSuccess() {
+    $('.alert-success').show("slow");
+}
+
 //create new product
 $("button.btn-createProduct")
     .click(
@@ -14,7 +18,7 @@ $("button.btn-createProduct")
             };
             $.post("api/products", product)
                 .done(function (data, textStatus, xhr) {
-                    alert('Success');
+                    showAlertSuccess();
                     $("form")[0].reset();
                 })
                 .fail(function (data, textStatus, xhr) {

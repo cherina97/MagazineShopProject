@@ -58,3 +58,9 @@ td{
     width: 100px;
     font-size: 16px;
 }
+.alert-success {
+    display: none;
+    background: rgba(52, 46, 45, 0.81);
+    margin-top: 20px;
+    color: #ffffff;
+}

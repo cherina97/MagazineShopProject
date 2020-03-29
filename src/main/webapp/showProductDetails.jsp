@@ -31,6 +31,12 @@
 
             <button type="submit" class="btn-addToBucket"
                     product-id="<%=request.getAttribute("productId")%>">Add to bucket</button>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <b>Success!</b> Product is being successfully added to bucket!
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
             <br>
             <a href="${pageContext.request.contextPath}/showAllProducts" class='card-link'>Back to all products</a>
         </div>

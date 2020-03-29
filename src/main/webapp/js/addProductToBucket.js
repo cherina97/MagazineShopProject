@@ -1,3 +1,7 @@
+function showAlertSuccess() {
+    $('.alert-success').show("slow");
+}
+
 $("button.btn-addToBucket")
     .click
     (function (event) {
@@ -7,7 +11,7 @@ $("button.btn-addToBucket")
 
     $.post("api/buckets", {productId})
         .done(function () {
-            alert("Product is being successfully added to bucket");
+            showAlertSuccess();
         })
         .fail(function () {
             alert("error");
