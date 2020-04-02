@@ -1,49 +1,60 @@
 package entities;
 
+import javax.persistence.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.Objects;
 
+@Entity
+@Table(name = "buckets")
 public class Bucket {
-    private Integer id;
-    private Integer user_id;
-    private Integer product_id;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+    private int user_id;
+    private int product_id;
     private Date purchase_date;
 
+    public Bucket(){}
     public static class Builder {
         private Bucket bucket;
 
         public Builder() {
             bucket = new Bucket();
         }
-        public Bucket.Builder withId(Integer id){
+
+        public Bucket.Builder withId(Integer id) {
             bucket.id = id;
             return this;
         }
 
-        public Bucket.Builder withUserId(Integer user_id){
+        public Bucket.Builder withUserId(Integer user_id) {
             bucket.user_id = user_id;
             return this;
         }
-        public Bucket.Builder withProductId(Integer product_id){
+
+        public Bucket.Builder withProductId(Integer product_id) {
             bucket.product_id = product_id;
             return this;
         }
-        public Bucket.Builder withDate(Date purchase_date){
+
+        public Bucket.Builder withDate(Date purchase_date) {
             bucket.purchase_date = purchase_date;
             return this;
         }
-        public Bucket build(){
+
+        public Bucket build() {
             return bucket;
         }
     }
 
     public static Bucket of(ResultSet resultSet) {
         try {
-            Integer id = resultSet.getInt("id");
-            Integer user_id = resultSet.getInt("user_id");
-            Integer product_id = resultSet.getInt("product_id");
+            int id = resultSet.getInt("id");
+            int user_id = resultSet.getInt("user_id");
+            int product_id = resultSet.getInt("product_id");
             Date purchase_date = resultSet.getDate("purchase_date");
 
             return new Bucket.Builder()
@@ -58,27 +69,27 @@ public class Bucket {
         }
     }
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public Integer getUser_id() {
+    public int getUser_id() {
         return user_id;
     }
 
-    public void setUser_id(Integer user_id) {
+    public void setUser_id(int user_id) {
         this.user_id = user_id;
     }
 
-    public Integer getProduct_id() {
+    public int getProduct_id() {
         return product_id;
     }
 
-    public void setProduct_id(Integer product_id) {
+    public void setProduct_id(int product_id) {
         this.product_id = product_id;
     }
 
@@ -90,14 +101,15 @@ public class Bucket {
         this.purchase_date = purchase_date;
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Bucket bucket = (Bucket) o;
-        return Objects.equals(id, bucket.id) &&
-                Objects.equals(user_id, bucket.user_id) &&
-                Objects.equals(product_id, bucket.product_id) &&
+        return id == bucket.id &&
+                user_id == bucket.user_id &&
+                product_id == bucket.product_id &&
                 Objects.equals(purchase_date, bucket.purchase_date);
     }
 

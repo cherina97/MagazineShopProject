@@ -1,4 +1,4 @@
-package recources;
+package resources;
 
 import org.apache.log4j.PropertyConfigurator;
 

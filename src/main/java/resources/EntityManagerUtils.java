@@ -1,6 +1,4 @@
-package recources;
-
-import services.BucketService;
+package resources;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
