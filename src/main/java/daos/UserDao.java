@@ -76,7 +76,7 @@ public class UserDao implements CRUD<User> {
     }
 
     public Optional<User> readByEmail(String email) {
-        LOG.trace("Reading user by email and password...");
+        LOG.trace("Reading user by email...");
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_EMAIL);
             preparedStatement.setString(1, email);
