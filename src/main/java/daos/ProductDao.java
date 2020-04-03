@@ -1,5 +1,6 @@
 package daos;
 
+import entities.Bucket;
 import entities.Product;
 import org.apache.log4j.Logger;
 import resources.ConnectionUtil;
@@ -107,10 +108,15 @@ public class ProductDao implements CRUD<Product> {
     @SuppressWarnings("unchecked")
     public List<Product> readAllByIds(Set<Integer> productIds) {
         LOG.info("Reading products by ids...");
+        List <Product> productList = new ArrayList<>();
         EntityManager entityManager = EntityManagerUtils.getEntityManager();
         entityManager.getTransaction().begin();
-        return entityManager.createQuery(READ_ALL_IN)
-                .setParameter("productIds", productIds)
-                .getResultList();
+        if(!productIds.isEmpty()){
+            productList = entityManager.createQuery(READ_ALL_IN)
+                    .setParameter("productIds", productIds)
+                    .getResultList();
+        }
+        entityManager.getTransaction().commit();
+        return productList;
     }
 }
