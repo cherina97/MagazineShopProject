@@ -38,7 +38,7 @@
                 </button>
             </div>
             <br>
-            <a href="${pageContext.request.contextPath}/showAllProducts" class='card-link'>Back to all products</a>
+            <a href="${pageContext.request.contextPath}/show-all-products" class='card-link'>Back to all products</a>
         </div>
 
 

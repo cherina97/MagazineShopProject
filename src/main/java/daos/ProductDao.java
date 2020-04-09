@@ -1,10 +1,13 @@
 package daos;
 
+import entities.Bucket;
 import entities.Product;
-import entities.User;
 import org.apache.log4j.Logger;
-import recources.ConnectionUtil;
+import resources.ConnectionUtil;
+import resources.EntityManagerUtils;
 
+import javax.persistence.EntityManager;
+import java.nio.channels.SelectableChannel;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,32 +24,23 @@ public class ProductDao implements CRUD<Product> {
     }
 
 
-    private static String SELECT_ALL = "select * from products";
+    private static String SELECT_ALL = "select p from Product p";
     private static String CREATE = "insert into products(`name`, `description`, `price`) values (?,?,?)";
     private static String READ_BY_ID = "select * from products where id =?";
     private static String UPDATE_BY_ID = "update products set name=?, description = ?, price = ? where id = ?";
     private static String DELETE_BY_ID = "delete from products where id=?";
-    private static String READ_ALL_IN = "select * from products where id in ";
+    private static String READ_ALL_IN = "select p from Product p where p.id in (:productIds)";
 
 
     @Override
     public Product create(Product product) {
-        LOG.trace("Creating new product...");
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(CREATE, Statement.RETURN_GENERATED_KEYS);
-            setParametersForProduct(preparedStatement, product);
-            preparedStatement.executeUpdate();
-            String infoCreate = String.format("Created a new product in database with id=%d, name=%s",
-                    product.getId(), product.getName());
-            LOG.info(infoCreate);
+        LOG.info("Creating new product....");
+        EntityManager entityManager = EntityManagerUtils.getEntityManager();
+        entityManager.getTransaction().begin();
+        entityManager.persist(product);
+        entityManager.getTransaction().commit();
+        LOG.info("New product was created");
 
-            ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
-            generatedKeys.next();
-            product.setId(generatedKeys.getInt(1));
-
-        } catch (SQLException e) {
-            LOG.error("Can`t create new product", e);
-        }
         return product;
     }
 
@@ -59,19 +53,13 @@ public class ProductDao implements CRUD<Product> {
 
     @Override
     public Optional<Product> read(int id) {
-        LOG.trace("Reading product by id...");
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(READ_BY_ID);
-            preparedStatement.setInt(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                return Optional.of(Product.of(resultSet));
-            }
-        } catch (SQLException e) {
-            String errorReadById = String.format("Can`t read product with id = %s", id);
-            LOG.error(errorReadById, e);
-        }
-        return Optional.empty();
+        LOG.info("Reading product by id...");
+        EntityManager entityManager = EntityManagerUtils.getEntityManager();
+        entityManager.getTransaction().begin();
+        Product product = entityManager.find(Product.class, id);
+        entityManager.getTransaction().commit();
+
+        return Optional.ofNullable(product);
     }
 
     @Override
@@ -105,38 +93,30 @@ public class ProductDao implements CRUD<Product> {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<Product> readAll() {
-        List<Product> products = new ArrayList<>();
-        LOG.trace("Reading all products from DB...");
-        try {
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(SELECT_ALL);
-            while (resultSet.next()) {
-                products.add(Product.of(resultSet));
-            }
-        } catch (SQLException e) {
-            LOG.error("Can`t read all products", e);
-        }
+        LOG.info("Reading all products from DB...");
+        EntityManager entityManager = EntityManagerUtils.getEntityManager();
+        entityManager.getTransaction().begin();
+        List<Product> products = entityManager.createQuery(SELECT_ALL)
+                .getResultList();
+        entityManager.getTransaction().commit();
+
         return products;
     }
 
+    @SuppressWarnings("unchecked")
     public List<Product> readAllByIds(Set<Integer> productIds) {
-        List<Product> products = new ArrayList<>();
-        try {
-            String ids = productIds.stream()
-                    .map(String::valueOf)
-                    .collect(Collectors.joining(","));
-
-            String query = String.format("%s (%s)", READ_ALL_IN, ids);
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()){
-                products.add(Product.of(resultSet));
-            }
-        } catch (SQLException e) {
-            LOG.error("Can`t read products by IDs", e);
+        LOG.info("Reading products by ids...");
+        List <Product> productList = new ArrayList<>();
+        EntityManager entityManager = EntityManagerUtils.getEntityManager();
+        entityManager.getTransaction().begin();
+        if(!productIds.isEmpty()){
+            productList = entityManager.createQuery(READ_ALL_IN)
+                    .setParameter("productIds", productIds)
+                    .getResultList();
         }
-        return products;
+        entityManager.getTransaction().commit();
+        return productList;
     }
 }

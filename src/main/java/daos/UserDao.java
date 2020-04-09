@@ -3,8 +3,10 @@ package daos;
 
 import entities.User;
 import org.apache.log4j.Logger;
-import recources.ConnectionUtil;
+import resources.ConnectionUtil;
+import resources.EntityManagerUtils;
 
+import javax.persistence.EntityManager;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,29 +25,17 @@ public class UserDao implements CRUD<User> {
     public static final String DELETE = "DELETE FROM users where id = ?";
     public static final String UPDATE = "UPDATE users SET first_name = ?, last_name = ?, email = ?, role = ?, password = ? where id = ?";
     public static final String SELECT_BY_ID = "SELECT * FROM users where id = ?";
-    public static final String INSERT_INTO =
-            "INSERT INTO users(first_name, last_name, email, role, password) values(?, ?, ?, ?, ?)";
-    public static final String SELECT_BY_EMAIL = "SELECT * FROM users where email = ?";
+    public static final String SELECT_BY_EMAIL = "SELECT u FROM User u where u.email = :email";
 
     @Override
     public User create(User user) {
-        LOG.trace("Creating new user...");
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(INSERT_INTO, Statement.RETURN_GENERATED_KEYS);
-            setParametersForUser(preparedStatement, user);
-            preparedStatement.executeUpdate();
+        LOG.info("Creating new user....");
+        EntityManager entityManager = EntityManagerUtils.getEntityManager();
+        entityManager.getTransaction().begin();
+        entityManager.persist(user);
+        entityManager.getTransaction().commit();
+        LOG.info("New user was created");
 
-            String infoCreate = String.format("Created a new user in database with id=%d, email=%s",
-                    user.getId(), user.getEmail());
-            LOG.info(infoCreate);
-
-            ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
-            generatedKeys.next();
-            user.setId(generatedKeys.getInt(1));
-
-        } catch (SQLException e) {
-            LOG.error("Can`t create new user", e);
-        }
         return user;
     }
 
@@ -76,20 +66,15 @@ public class UserDao implements CRUD<User> {
     }
 
     public Optional<User> readByEmail(String email) {
-        LOG.trace("Reading user by email and password...");
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_EMAIL);
-            preparedStatement.setString(1, email);
-            ResultSet resultSet = preparedStatement.executeQuery();
+        LOG.info("Reading user by email...");
+        EntityManager entityManager = EntityManagerUtils.getEntityManager();
+        entityManager.getTransaction().begin();
+        User user = (User) entityManager.createQuery(SELECT_BY_EMAIL)
+                .setParameter("email", email)
+                .getSingleResult();
 
-            if (resultSet.next()){
-                return Optional.of(User.of(resultSet));
-            }
-        } catch (SQLException e) {
-            String errorReadByEmail = String.format("Can`t read user with email = %s", email);
-            LOG.error(errorReadByEmail, e);
-        }
-        return Optional.empty();
+        entityManager.getTransaction().commit();
+        return Optional.ofNullable(user);
     }
 
     @Override

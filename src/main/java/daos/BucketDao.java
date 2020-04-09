@@ -3,8 +3,10 @@ package daos;
 import entities.Bucket;
 import entities.Product;
 import org.apache.log4j.Logger;
-import recources.ConnectionUtil;
+import resources.ConnectionUtil;
+import resources.EntityManagerUtils;
 
+import javax.persistence.EntityManager;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +21,7 @@ public class BucketDao implements CRUD<Bucket> {
     }
 
     public static final String SELECT_ALL = "SELECT * FROM buckets";
-    public static final String SELECT_BY_USER_ID = "SELECT * FROM buckets where user_id = ?";
+    public static final String SELECT_BY_USER_ID = "SELECT b FROM Bucket b where b.user_id = :userId";
     public static final String DELETE = "DELETE FROM buckets where id = ?";
     public static final String DELETE_BY_USER_AND_PRODUCT_IDS =
             "DELETE FROM buckets where user_id = ? and product_id = ?";
@@ -30,23 +32,13 @@ public class BucketDao implements CRUD<Bucket> {
 
     @Override
     public Bucket create(Bucket bucket) {
-        LOG.trace("Creating new bucket...");
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(INSERT_INTO, Statement.RETURN_GENERATED_KEYS);
-            setParametersForBucket(preparedStatement, bucket);
-            preparedStatement.executeUpdate();
+        LOG.info("Creating new bucket....");
+        EntityManager entityManager = EntityManagerUtils.getEntityManager();
+        entityManager.getTransaction().begin();
+        entityManager.persist(bucket);
+        entityManager.getTransaction().commit();
+        LOG.info("New bucket was created");
 
-            String infoCreate = String.format("Created a new bucket in database with user_id=%d, product_id=%d",
-                    bucket.getUser_id(), bucket.getProduct_id());
-            LOG.info(infoCreate);
-
-            ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
-            generatedKeys.next();
-            bucket.setId(generatedKeys.getInt(1));
-
-        } catch (SQLException e) {
-            LOG.error("Can`t create new user", e);
-        }
         return bucket;
     }
 
@@ -59,18 +51,13 @@ public class BucketDao implements CRUD<Bucket> {
 
     @Override
     public Optional<Bucket> read(int id) {
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_ID);
-            preparedStatement.setInt(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                return Optional.of(Bucket.of(resultSet));
-            }
-        } catch (SQLException e) {
-            String errorReadById = String.format("Can`t read bucket with id = %s", id);
-            LOG.error(errorReadById, e);
-        }
-        return Optional.empty();
+        LOG.info("Reading bucket by id...");
+        EntityManager entityManager = EntityManagerUtils.getEntityManager();
+        entityManager.getTransaction().begin();
+        Bucket bucket = entityManager.find(Bucket.class, id);
+        entityManager.getTransaction().commit();
+
+        return Optional.ofNullable(bucket);
     }
 
     @Override
@@ -93,14 +80,14 @@ public class BucketDao implements CRUD<Bucket> {
 
     @Override
     public void delete(int id) {
-        LOG.trace("Deleting bucket...");
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(DELETE);
-            preparedStatement.setInt(1, id);
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            LOG.error("Can`t delete user by id", e);
-        }
+        LOG.info("Deleting bucket by id...");
+        EntityManager entityManager = EntityManagerUtils.getEntityManager();
+        entityManager.getTransaction().begin();
+        Bucket bucket = entityManager.find(Bucket.class, id);
+        entityManager.remove(bucket);
+        entityManager.flush();
+        entityManager.getTransaction().commit();
+        LOG.info("Bucket was deleted");
     }
 
     @Override
@@ -119,31 +106,16 @@ public class BucketDao implements CRUD<Bucket> {
         return buckets;
     }
 
+    @SuppressWarnings("unchecked")
     public List<Bucket> getAllByUserId(int userId) {
-        List<Bucket> buckets = new ArrayList<>();
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_USER_ID);
-            preparedStatement.setInt(1, userId);
-            ResultSet resultSet = preparedStatement.executeQuery();
+        LOG.info("Getting all buckets by user id...");
+        EntityManager entityManager = EntityManagerUtils.getEntityManager();
+        entityManager.getTransaction().begin();
+        List <Bucket> buckets = entityManager.createQuery(SELECT_BY_USER_ID)
+                .setParameter("userId", userId)
+                .getResultList();
+        entityManager.getTransaction().commit();
 
-            while (resultSet.next()) {
-                buckets.add(Bucket.of(resultSet));
-            }
-        } catch (SQLException e) {
-            LOG.error("Can`t read buckets by userID", e);
-        }
         return buckets;
-    }
-
-    public void deleteBucketByUserAndProductIds(int productId, int userId) {
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(DELETE_BY_USER_AND_PRODUCT_IDS);
-            preparedStatement.setInt(1, userId);
-            preparedStatement.setInt(2, productId);
-            preparedStatement.executeUpdate();
-
-        } catch (SQLException e) {
-            LOG.error("Can`t delete bucket by product and user ids", e);
-        }
     }
 }

@@ -98,7 +98,7 @@
                         <div class="sidebar-submenu">
                             <ul>
                                 <li>
-                                    <a href="${pageContext.request.contextPath}/showAllProducts">
+                                    <a href="${pageContext.request.contextPath}/show-all-products">
                                         All books</a>
                                 </li>
                             </ul>

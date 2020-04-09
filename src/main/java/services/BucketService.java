@@ -45,8 +45,4 @@ public class BucketService {
     public List<Bucket> getAllByUserId(int userId) {
         return bucketDao.getAllByUserId(userId);
     }
-
-    public void deleteBucketByUserAndProductIds(int productId, int userId) {
-        bucketDao.deleteBucketByUserAndProductIds(productId, userId);
-    }
 }
